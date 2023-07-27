@@ -12,6 +12,7 @@ public class Blog {
     private String id;
     private String title;
     private String topic;
+    private String stateId;
     private String content;
     private int numOfLikes;
     private String date;
@@ -21,6 +22,7 @@ public class Blog {
     private String time;
     private String img;
     private String readMinute;
+    private String fullName;
     public Blog() {
     }
 
@@ -66,6 +68,23 @@ public class Blog {
         this.userName = userName;
     }
 
+    public Blog(String id, String title, String stateId, String content, String date, String userID, String userName, String fullName) {
+        this.id = id;
+        this.title = title;
+        this.stateId = stateId;
+        this.content = content;
+        this.date = date;
+        this.userID = userID;
+        this.userName = userName;
+        this.fullName = fullName;
+    }
+
+    
+
+    
+    
+    
+
     public String getId() {
         return id;
     }
@@ -89,6 +108,15 @@ public class Blog {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+    
 
     public String getContent() {
         return content;
@@ -162,10 +190,21 @@ public class Blog {
         this.readMinute = readMinute;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     @Override
     public String toString() {
-        return "Blog{" + "id=" + id + ", title=" + title + ", topic=" + topic + ", content=" + content + ", numOfLikes=" + numOfLikes + ", date=" + date + ", userID=" + userID + ", userAvatar=" + userAvatar + ", userName=" + userName + ", time=" + time + ", img=" + img + '}';
+        return "Blog{" + "id=" + id + ", title=" + title + ", topic=" + topic + ", stateId=" + stateId + ", content=" + content + ", numOfLikes=" + numOfLikes + ", date=" + date + ", userID=" + userID + ", userAvatar=" + userAvatar + ", userName=" + userName + ", time=" + time + ", img=" + img + ", readMinute=" + readMinute + ", fullName=" + fullName + '}';
     }
+    
+
+    
 
     
 }

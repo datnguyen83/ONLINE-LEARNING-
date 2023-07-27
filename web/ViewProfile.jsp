@@ -19,6 +19,18 @@ Author     : HP
         <link rel="stylesheet" type="text/css" href="./css/footer.css">
         <link rel="stylesheet" type="text/css" href="./css/sidebar.css.css">
         <link rel="stylesheet" href="./font/fontawesome-free-6.4.0-web/fontawesome-free-6.4.0-web/css/all.min.css">
+        <style>
+            a:hover{
+                opacity: 0.8;
+                text-decoration: underline;
+            }
+
+            .comment:hover{
+                opacity: 0.8;
+                text-decoration: underline;
+            }
+
+        </style>
     </head>
     <body>
         <!--Include page header and sidebar-->
@@ -32,13 +44,13 @@ Author     : HP
             <input type="text" name="uid" value="${inforUser.getId()}" style="display: none">
             <!--Button change cover image-->
             <c:if test="${sessionScope.account.getId() == inforUser.getId()}">
-                
-            <input type="file"  name="file" id="file" class="input_img" accept=".jpg, .png, .gif" value="${inforUser.getCoverImage()}">
-            <label for="file" ><i class='bx bxs-camera'></i> Chỉnh sửa ảnh bìa </label>
-            <div class="option" style="margin-left: 960px; margin-top: -210px; position: absolute; display: none" >
-                <button type="submit" name="save"><i class='bx bx-check'></i></button>
-                <button type="submit" name="cancel"><i class='bx bx-x'></i></button>
-            </div>
+
+                <input type="file"  name="file" id="file" class="input_img" accept=".jpg, .png, .gif" value="${inforUser.getCoverImage()}">
+                <label for="file" ><i class='bx bxs-camera'></i> Chỉnh sửa ảnh bìa </label>
+                <div class="option" style="margin-left: 960px; margin-top: -210px; position: absolute; display: none" >
+                    <button type="submit" name="save"><i class='bx bx-check'></i></button>
+                    <button type="submit" name="cancel"><i class='bx bx-x'></i></button>
+                </div>
             </c:if>
         </form>
 
@@ -76,20 +88,28 @@ Author     : HP
                 <!--Recent Activity-->
                 <div class="work">
                     <h3>Hoạt động gần đây </h3> <br>
-                    <p>Chưa có hoạt động gần đây</p>
+                    <c:choose>
+                        <c:when test="${listComment.size() == 0}">
+                            <p>Chưa có hoạt động gần đây</p>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${listComment}" var="item">
+                                <a href="blogDetail?id=${item.getBlogID()}" style="text-decoration: none; color: black"> <p class="comment" style="font-size: 16px"> Ðã bình luận: ${item.getContent()}</p> <br> </a>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                 </div>
             </div>
             <!--Course attended-->
             <div class="content_right">
                 <div class="course">
                     <h3>Các khóa học đã tham gia</h3> <br>
-                        <c:choose>
-                            <c:when test="${listCourseOfAccount.size() == 0}">
-                                <p>Chưa có khóa học nào được đăng kí</p>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach items="${listCourseOfAccount}" var="item">
-                                    <c:if test="${item.getStateId() != 3}">
+                    <c:choose>
+                        <c:when test="${listCourseOfAccount.size() == 0}">
+                            <p>Chưa có khóa học nào được đăng kí</p>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${listCourseOfAccount}" var="item">
                                     <div class="course_account">
                                         <div class="left">
                                             <a href="videoCourse?courseID=${item.getId()}"><img src="${item.getImage()}"></a>
@@ -99,10 +119,9 @@ Author     : HP
                                             <p>${item.getDetailCourseDes()}</p>
                                         </div>
                                     </div> <hr>
-                                    </c:if>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
 
                 </div>
             </div>

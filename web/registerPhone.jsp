@@ -44,13 +44,30 @@
             .send_code_phone{
                 position: absolute;
                 left: 362px;
-                width:146px;
+                width:100px;
                 height: 42px;
                 border-radius:24px;
                 border-style: solid;
                 border-color: #00000000;
                 border-width: 2px;
-                font-size: 17px ;
+                font-size: 13px ;
+                top: 2px;
+                font-weight: 700;
+                background-color: #ccc;
+                justify-content: center;
+                font-family: 'Montserrat',Arial,Helvetica,sans-serif;
+                color: #3a3636a3;
+            }
+            .send_code_email input[type="submit"]{
+                position: absolute;
+                left: 362px;
+                width:100px;
+                height: 42px;
+                border-radius:24px;
+                border-style: solid;
+                border-color: #00000000;
+                border-width: 2px;
+                font-size: 13px ;
                 top: 2px;
                 font-weight: 700;
                 background-color: #ccc;
@@ -102,22 +119,30 @@
                         <h5 style="margin-left: 125px;font-family: 'Montserrat',Arial,Helvetica,sans-serif">Tên của bạn? </h5>
                         <div class="form-group" style="text-align: center ">
 
-                            <input type="text" class="form-input" placeholder="    Họ và tên của bạn" id="name" name="name" > 
+                            <input type="text" class="form-input" value="${name}" placeholder="    Họ và tên của bạn" id="name" name="name" > 
                         </div>
                         <div class="mid_register" style="display: inline-flex">                        
                             <h5 style="margin-left: 125px;font-family: 'Montserrat',Arial,Helvetica,sans-serif">Số điện thoại </h5>                       
                             <h5 style="cursor: pointer;margin-left: 170px;font-family: 'Montserrat',Arial,Helvetica,sans-serif" onclick="register_email_ridect()">Đăng ký với Email</h5>                                               
                         </div>
 
-                        <div class="form-group" style="text-align: center ">
-                            <input id="phone" name="phone" type="tel" class="form-input" placeholder="    Số điện thoại" style="margin-bottom: 10px;" >                  
+                        <div class="form-group" style="text-align: center ;position: relative">
+                            <input id="phone" name="phone" value="${phone}" type="tel" class="form-input" placeholder="    Số điện thoại" style="margin-bottom: 10px;" >   
+                            <div class="send_code_email" style="display: flex;justify-content: center;align-items: center;margin-left: 48px; margin-bottom: 2px">
+                         <input type="submit" name="checkPhone" style="margin-top: ;cursor: pointer;margin-left: 48px;" value="Check Phone"> 
+                            </div>
                         </div>  
-
+                        <div style="display: flex;justify-content: center; color: red;font-weight:bold ">
+                            ${errorMessage1}                          
+                        </div>  
+                        <div style="display: flex;justify-content: center; color: green;font-weight:bold ">
+                            ${errorMessage2}                    
+                        </div>  
                         <br> 
                         <div class="form-group" style="text-align: center ;position: relative">                        
                             <input id="" type="password" class="form-input" placeholder="    Nhập mã xác nhận" name="authetication_code">                      
-                            <div class="send_code_phone">                            
-                                <div onclick="sendVerificationCode()" style="margin-top: 10px;cursor: pointer;"> Gửi mã</div>
+                            <div class="send_code_phone" style="margin-left: 48px">                            
+                                <div onclick="sendVerificationCode()" style="margin-top: 12px;cursor: pointer;"> Gửi mã</div>
                             </div>
                             <!--<button onclick="test()">test</button>-->
                             <p id="statusMessage"></p>
@@ -131,7 +156,7 @@
                             ${errorMessage}                            
                         </div>  
                         <div style="text-align: center;">
-                            <button style="cursor: pointer;" class="submit" type="submit" value="" />Đăng kí
+                            <button style="cursor: pointer;" class="submit" type="submit" name="register" />Đăng kí
                         </div>
                     </div>
                 </form>
@@ -155,7 +180,7 @@
             function register_email_ridect() {
                 window.location.href = "/g4/registerEmail.jsp";
             }
-            function returnHome(){
+            function returnHome() {
                 window.location.href = "/g4/home";
             }
             function ridect_login() {
@@ -165,7 +190,8 @@
             const phoneInputField = document.querySelector("#phone");
             const phoneInput = window.intlTelInput(phoneInputField, {
                 utilsScript:
-                        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                initialCountry: "vn"
             });
         </script>
 

@@ -64,14 +64,27 @@ public class registerPhoneServlet extends HttpServlet {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         AccountDAO accountDao = new AccountDAO();
-        if (accountDao.checkUserPhone(phone)) {
-            String errorMessage = "SÐT đã tồn tại. Vui lòng sử dụng SÐT khác!";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("registerPhone.jsp").forward(request, response);
-        }else{
+
+        if (request.getParameter("checkPhone") != null) {
+            if (accountDao.checkUserPhone(phone)) {
+                String errorMessage1 = "Phone đã tồn tại. Vui lòng sử dụng phone khác!";
+                request.setAttribute("errorMessage1", errorMessage1);
+                request.setAttribute("phone", phone);
+                request.setAttribute("name", name);
+                request.getRequestDispatcher("registerPhone.jsp").forward(request, response);
+            } else {
+                String errorMessage2 = "Phone chưa được sử dụng!";
+                request.setAttribute("errorMessage2", errorMessage2);
+                request.setAttribute("phone", phone);
+                request.setAttribute("name", name);
+                request.getRequestDispatcher("registerPhone.jsp").forward(request, response);
+            }
+        }
+        if (request.getParameter("register")!=null) {
+
             //add to database
             String username = generateRandomUsername();
-            accountDao.createPhone(username, phone, name,"image/default_cover.png","2");
+            accountDao.createPhone(username, phone, name, "image/default_cover.png", "2");
             response.sendRedirect("home");
         }
 
@@ -90,6 +103,7 @@ public class registerPhoneServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
     public static String generateRandomUsername() {
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         int length = 6;

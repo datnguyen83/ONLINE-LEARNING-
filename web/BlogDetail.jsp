@@ -132,20 +132,20 @@
                                 <c:choose>
                                     <c:when test="${acc.getAvatar() == null}">
                                         <div>
-                                            <img onclick="window.location = 'profile?id=${blog.getUserID()}'" style="cursor: pointer"class="avt_com" src ="./image/f8_logo.png"> <br>
+                                            <img onclick="window.location = 'profile?id=${acc.getId()}'" style="cursor: pointer"class="avt_com" src ="./image/f8_logo.png"> <br>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
                                         <c:if test="${acc.getId() == comment.getUserID()}">
                                             <div>
-                                                <img onclick="window.location = 'profile?id=${blog.getUserID()}'" style="cursor: pointer"class="avt_com" src ="${acc.getAvatar()}"> <br>
+                                                <img onclick="window.location = 'profile?id=${acc.getId()}'" style="cursor: pointer"class="avt_com" src ="${acc.getAvatar()}"> <br>
                                             </div>
                                         </c:if>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:if test="${acc.getId() == comment.getUserID()}">
                                     <div class="content_com">
-                                        <h4 onclick="window.location = 'profile?id=${blog.getUserID()}'" style="cursor: pointer">${acc.getFirstAndLastName()}</h4>
+                                        <h4 onclick="window.location = 'profile?id=${acc.getId()}'" style="cursor: pointer">${acc.getFirstAndLastName()}</h4>
                                         <span style="padding: 0 8px 0 8px">·</span>
                                         <p style="color: grey">${comment.getTime()}</p>
                                         <div style="position: absolute; margin-left: 200px">

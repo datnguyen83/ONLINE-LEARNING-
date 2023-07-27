@@ -91,7 +91,12 @@
     <body >
           <jsp:include page="header.jsp"></jsp:include> 
         <form action="createRouteCourseItem" method="post">
-            <div style="display: flex ;
+            <div style="display: flex ;">
+                    <div style="margin-left: 30px;margin-top: 30px">
+                    <jsp:include page="sidebar.jsp"></jsp:include>
+                    </div>
+                    <div style="margin-left: 300px">
+                        <div style="display: flex ;
                  justify-content: center;align-items: center;margin-top: 30px
                
                 ">
@@ -146,7 +151,10 @@
                     </div>
                     <input type="submit" Value="Submit" class="submit" />
                 </div>
-            </div>
+            </div> 
+                    </div>
+                </div>
+           
         </form>
         <script>
             const form = document.querySelector('form');

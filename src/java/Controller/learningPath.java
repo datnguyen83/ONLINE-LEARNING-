@@ -58,7 +58,7 @@ public class learningPath extends HttpServlet {
     throws ServletException, IOException {
 //        processRequest(request, response);
         RouteTypeDAO routeTypeDao = new RouteTypeDAO();
-        ArrayList<RouteType> listRouteType = routeTypeDao.getAllRouteType();
+        ArrayList<RouteType> listRouteType = routeTypeDao.getAllRouteTypePublic();
         request.setAttribute("listRouteType", listRouteType);
         request.getRequestDispatcher("learningPath.jsp").forward(request, response);
     } 

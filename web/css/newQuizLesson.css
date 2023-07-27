@@ -12,14 +12,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     justify-content: center;
     align-items: center;
     background-image: url("http://localhost:9999/g4/image/anhnen.png");
-    min-height: 900px;
+    min-height: 850px;
 }
 #ft {
     margin-top: 0;
 }
 .content {
     width: 600px;
-    min-height: 750px;
+    min-height: 700px;
     background-color: #fdcfc9;
     border-radius: 2%;
     margin-top: 60px;

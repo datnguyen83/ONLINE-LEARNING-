@@ -34,6 +34,21 @@ public class RouteTypeDAO {
         }
         return listR;
     }
+
+    public ArrayList<RouteType> getAllRouteTypePublic() {
+        ArrayList<RouteType> listR = new ArrayList<>();
+        String sql = "select * from RouteType where status = 0";
+        try {
+            PreparedStatement pstm = DBContext.getConnection().prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                listR.add(new RouteType(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllRouteType: " + e.getMessage());
+        }
+        return listR;
+    }
     //Khai bao cac thanh phan xu ly DB
     Connection cnn;//Ket noi DB
     Statement stm;//Thuc thi cau lenh sql
@@ -97,7 +112,7 @@ public class RouteTypeDAO {
             pstm.setString(2, routeType.getImage());
             pstm.setString(3, routeType.getDescription1());
             pstm.setString(4, routeType.getDescription2());
-           pstm.setString(5, routeType.getStatus());
+            pstm.setString(5, routeType.getStatus());
 
             pstm.executeUpdate();
         } catch (Exception e) {
@@ -119,5 +134,27 @@ public class RouteTypeDAO {
     public static void main(String[] args) {
         RouteTypeDAO routeType = new RouteTypeDAO();
 //        routeType.editRouteTypeByID(routeType);
+    }
+
+    public void updateStatusOfRouteType(String routeTypeID, String statusUpdate) {
+        try {
+            String strSelect = "";
+            // Show route type
+            if (statusUpdate.equals("1")) {
+                strSelect = "UPDATE RouteType\n"
+                        + "SET Status = 0\n"
+                        + "WHERE Id = ?";
+            } else { // Hide route type
+                strSelect = "UPDATE RouteType\n"
+                        + "SET Status = 1\n"
+                        + "WHERE Id = ?";
+            }
+
+            PreparedStatement pstm = DBContext.getConnection().prepareStatement(strSelect);
+            pstm.setString(1, routeTypeID);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("updateStatusOfRouteType: " + e.getMessage());
+        }
     }
 }

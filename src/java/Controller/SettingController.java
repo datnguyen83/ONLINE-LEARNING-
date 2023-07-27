@@ -97,18 +97,25 @@ public class SettingController extends HttpServlet {
                     copyImage(srcS, desS);
                     out.flush();
                     out.close();
+                    /* Update */
+                    accountDAO.updateInforUser(userId, name, bio, "./image/" + filePart.getSubmittedFileName(), username, email, phoneNumber);
+                    /* Update to session */
+                    Account account = accountDAO.getInforUser(userId);
+                    req.getSession().setAttribute("account", account);
+                    doGet(req, resp);
                 }
             } catch (Exception e) {
                 accountDAO.updateNameAndBio(userId, name, bio, username, email, phoneNumber);
+                /* Update to session */
+                Account account = accountDAO.getInforUser(userId);
+                req.getSession().setAttribute("account", account);
                 doGet(req, resp);
             }
-            /* Update */
-            accountDAO.updateInforUser(userId, name, bio, "./image/" + filePart.getSubmittedFileName(), username, email, phoneNumber);
-            doGet(req, resp);
+
         }
     }
 
-     public static void copyImage(String srcS, String destS) {
+    public static void copyImage(String srcS, String destS) {
         System.out.println("");
         Path sourcePath = Paths.get(srcS);
         Path destPath = Paths.get(destS);

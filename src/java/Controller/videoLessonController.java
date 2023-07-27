@@ -79,6 +79,8 @@ public class videoLessonController extends HttpServlet {
         String cID = request.getParameter("courseID");
         if (cID != null) {
             courseID = cID;
+            LessonDAO lDao1 = new LessonDAO();
+            selectedID = lDao1.getMinLessonIdByCourseID(courseID);
         }
 
         LessonDAO lDao = new LessonDAO();
@@ -87,7 +89,7 @@ public class videoLessonController extends HttpServlet {
         int total = lDao.getTotalLesson(Integer.parseInt(courseID));
 
         ChapterDAO cDao = new ChapterDAO();
-        ArrayList<Chapter> chapters = cDao.getAll();
+        ArrayList<Chapter> chapters = lDao.getAllChapterByCID(Integer.parseInt(courseID));
 
         Lesson lesson = lDao.getLessonByID(selectedID);
 
@@ -98,7 +100,7 @@ public class videoLessonController extends HttpServlet {
             request.setAttribute("selectedID", selectedID);
         }
         request.setAttribute("cid", courseID);
-        
+
         request.setAttribute("total", total);
         request.setAttribute("notes", notes);
         request.setAttribute("lesson", lesson);

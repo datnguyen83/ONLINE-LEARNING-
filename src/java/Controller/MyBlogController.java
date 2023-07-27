@@ -5,11 +5,8 @@
 package Controller;
 
 import DAO.BlogDAO;
-import DAO.SavedBlogDAO;
 import Model.Account;
 import Model.Blog;
-import Model.CommentBlog;
-import Model.SavedBlog;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import static java.util.Optional.empty;
 
 /**
  *

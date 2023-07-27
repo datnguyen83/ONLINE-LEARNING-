@@ -19,7 +19,11 @@ public class Question {
 
     public Question() {
     }
-
+    public Question(String id, String content ,String explain) {
+        this.id = id;
+        this.content = content;
+        this.explain = explain;
+    }
     public Question(String id, String content, String explain, String lessonID) {
         this.id = id;
         this.content = content;

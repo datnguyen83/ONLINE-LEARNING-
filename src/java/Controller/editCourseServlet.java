@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -85,13 +86,35 @@ public class editCourseServlet extends HttpServlet {
         ArrayList<Course> listCourse1 = la.getCourse(courseId);
         ArrayList<CourseDetail> listCourseDes = la.getCourseDes(courseId);
         ArrayList<CourseLearnWhat> ListTarget = la.getAllTarget(courseId);
+        List<String> targetStr = new ArrayList<>();
+        for (CourseLearnWhat course : ListTarget) {
+            String content = course.getContent();
+            targetStr.add(content);
+        }
+        StringBuilder resultBuilder = new StringBuilder();
+        for (String str : targetStr) {
+            resultBuilder.append(str).append("\n");
+        }
+        String targetStr1 = resultBuilder.toString();
         ArrayList<CourseRequirement> ListRequirement = la.getAllRequirement(courseId);
+        List<String> requiStr = new ArrayList<>();
+        for (CourseRequirement course : ListRequirement) {
+            String content = course.getContent();
+            requiStr.add(content);
+        }
+        StringBuilder resultBuilder1 = new StringBuilder();
+        for (String str : requiStr) {
+            resultBuilder1.append(str).append("\n");
+        }
+        String requiStr1 = resultBuilder1.toString();
         ArrayList<Chapter> listChapter = la.getAllChapter(courseId);
 
         request.setAttribute("listCourse", listCourse1);
         request.setAttribute("listCourseDes", listCourseDes);
         request.setAttribute("ListTarget", ListTarget);
+        request.setAttribute("targetStr", targetStr1);
         request.setAttribute("ListRequirement", ListRequirement);
+        request.setAttribute("requiStr", requiStr1);
         request.setAttribute("listChapter", listChapter);
         request.getRequestDispatcher("courseEdit.jsp").forward(request, response);
     }
@@ -119,9 +142,11 @@ public class editCourseServlet extends HttpServlet {
         }
         String cid = request.getParameter("cid");
         String description = request.getParameter("description");
-        String target[] = request.getParameterValues("target");
+        String target = request.getParameter("target");
+        String[] targetStr = target.split("\n");
         String[] chapter = request.getParameterValues("chapter");
-        String requirement[] = request.getParameterValues("requiment");
+        String requirement = request.getParameter("requiment");
+        String[] requiStr = requirement.split("\n");
 
         LearnDAO la = new LearnDAO();
 
@@ -129,8 +154,8 @@ public class editCourseServlet extends HttpServlet {
 
         la.deleteAllTargetFromCID(cid);
         la.deleteAllRequirementFromCID(cid);
-        la.addTargetByCID(target, cid);
-        la.addRequimentByCID(requirement, cid);
+        la.addTargetByCID(targetStr, cid);
+        la.addRequimentByCID(requiStr, cid);
 
         ArrayList<String> listChapterName1 = la.getAllChapterName(cid);
         if (chapter != null) {
@@ -147,24 +172,49 @@ public class editCourseServlet extends HttpServlet {
         ArrayList<String> listChapterName = la.getAllChapterName(cid);
         for (String chap : listChapterName) {
             if (contains(chapter, chap)) {
-                
+
                 System.out.println("ke");
-            }else{
+            } else {
                 la.deleteChapterByName(chap, cid);
             }
         }
 
         ArrayList<Course> listCourse1 = la.getCourse(cid);
         ArrayList<CourseDetail> listCourseDes = la.getCourseDes(cid);
+        
         ArrayList<CourseLearnWhat> ListTarget = la.getAllTarget(cid);
+        List<String> targetStr2 = new ArrayList<>();
+        for (CourseLearnWhat course : ListTarget) {
+            String content = course.getContent();
+            targetStr2.add(content);
+        }
+        StringBuilder resultBuilder = new StringBuilder();
+        for (String str : targetStr2) {
+            resultBuilder.append(str).append("\n");
+        }
+        String targetStr1 = resultBuilder.toString();
+        
         ArrayList<CourseRequirement> ListRequirement = la.getAllRequirement(cid);
+        List<String> requiStr2 = new ArrayList<>();
+        for (CourseRequirement course : ListRequirement) {
+            String content = course.getContent();
+            requiStr2.add(content);
+        }
+        StringBuilder resultBuilder1 = new StringBuilder();
+        for (String str : requiStr2) {
+            resultBuilder1.append(str).append("\n");
+        }
+        String requiStr1 = resultBuilder1.toString();
+
         ArrayList<Chapter> listChapter1 = la.getAllChapter(cid);
         System.out.println(listChapter1);
         request.setAttribute("savedBlogStatus", "Chinh sua thanh cong");
         request.setAttribute("listCourse", listCourse1);
         request.setAttribute("listCourseDes", listCourseDes);
         request.setAttribute("ListTarget", ListTarget);
+        request.setAttribute("targetStr", targetStr1);
         request.setAttribute("ListRequirement", ListRequirement);
+        request.setAttribute("requiStr", requiStr1);
         request.setAttribute("listChapter", listChapter1);
         request.getRequestDispatcher("courseEdit.jsp").forward(request, response);
 

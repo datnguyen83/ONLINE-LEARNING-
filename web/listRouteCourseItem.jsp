@@ -1,7 +1,7 @@
 <%-- 
-    Document   : createRouteCourseItem
-    Created on : Jun 5, 2023, 11:11:10 PM
-    Author     : TIEN DAT
+    Document   : CourseList
+    Created on : Jun 10, 2023, 11:55:29 AM
+    Author     : DELL
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,48 +18,149 @@
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="path/to/unicons/css/unicons.css">
+        <script src="path/to/unicons/js/unicons.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/unicons/css/unicons.css">
+        <script src="${pageContext.request.contextPath}/resources/unicons/js/unicons.js"></script>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/unicons/css/unicons.css">
+        <script src="<%= request.getContextPath() %>/resources/unicons/js/unicons.js"></script>
+
+        <style>
+            .table1, th, td {
+                border: 1px solid #dee2e6;
+                vertical-align: top;
+                text-align: left;
+                padding: 8px;
+                border-collapse: collapse;
+            }
+
+            .mb-0 tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .mb-0 tr:hover {
+                background-color: #ddd;
+            }
+
+            thead tr th {
+                text-align: center;
+            }
+
+            .add_btn {
+
+                width: 237px;
+                height: 33px;
+                background: #4CAF50;
+                font-size: 17px;
+                margin-bottom: 10px;
+                border-radius: 4px;
+                border: none;
+                cursor: pointer;
+                font-size: 20px;
+            }
+        </style>
     </head>
-    <body style="background-image: url(https://accounts.fullstack.edu.vn/static/media/f8_bg_auth_1920.b517075e98f3051de678.png); font-size: 15px;">
+    <body>
+        <jsp:include page="header.jsp"></jsp:include>
+            <form action="editRouteTypeItem" method="post" id="form">
+                <div style="display: flex">
+                    <div style="margin-left: 30px;margin-top: 30px">
+                    <jsp:include page="sidebar.jsp"></jsp:include>
+                    </div>
+                    <div style="margin-left: 30px">
+                        <h2 style="color:black;font-size: 30px;margin-left: 270px">DANH SÁCH MỤC LỤC LỘ TRÌNH HỌC </h2>
+                        <div class="table-responsive shadow rounded m-5">
+                            <table id="table" class="  table table-center bg-white mb-0" style="font-size : 18px;margin-left: 100px">
+                                <div style="display: flex">
+                                    
+                                <p class="add_btn" style="display: flex; justify-content: center; align-items: center;margin-left: 100px">
+                                    <a onclick="window.location = 'createRouteCourseItem'" style="color:white;text-decoration:none;">Tạo mục lục lộ trình học</a>
+                                </p>
+                                <c:choose>
+                                    <c:when test="${selected == 0}">
+                                        <select id="filter" style="margin-left: 500px; font-size: 17px" onchange="myFunction(this)">
+                                            <option value="0" selected="">Tất cả trạng thái</option>
+                                            <c:forEach items="${listRouteType}" var="item">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <select id="filter" style="margin-left: 500px; font-size: 17px" onchange="myFunction(this)">
+                                            <option value="0">Tất cả trạng thái</option>
+                                            <c:forEach items="${listRouteType}" var="item">
+                                                <c:choose>
+                                                    <c:when test="${selected == item.id}">
+                                                        <option value="${item.id}" selected="">${item.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </c:otherwise>
+                                </c:choose>
+                                </div>
+                                <thead>
+                                    <tr style="background-color:#396cf0; color: #ffffff">
+                                        <th class="border-bottom p-3" style="min-width: 120px;">ID</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Tên lộ Trình</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Tên mục lục</th>
 
-        <form action="editRouteTypeItem" method="post">
-            <jsp:include page="header.jsp"></jsp:include> 
-                <h1 style="text-align: center;font-size: 30px;color: white;font-weight: 700;padding: 20px">DANH SÁCH MỤC LỤC LỘ TRÌNH HỌC </h1>
-                <p style="display:flex; align-items:center; justify-content:center;background-color: #3df31b;height: 25px;width: 261px;font-size: 20px;margin-left: 70px;margin-top: 30px;cursor: pointer;margin-bottom: 10px" onclick="window.location = 'createRouteCourseItem'">
-                    <i class="fa fa-plus" style="display:flex; align-items:center; justify-content:center;border: 2px solid white;border-radius: 50%;height: 20px"></i>
-                    Tạo mục lục lộ trình học</p>
-                <div class="table-wrapper" style="margin-top: -10px">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên lộ trình</th>
-                                <th>Tên mục lục</th>
-                                <th>Giới thiệu về mục lục</th>
-                                <th>Khóa học</th>
-                                <th>Buttom</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${listRouteTypeItem}" var="i">
-                            <tr>
-                                <td name="id">${i.id}</td>
-                                <td>${i.nameRouteType}</td>
-                                <td>${i.nameRoutyTypeItem}</td>
-                                <td>${i.description}</td>
-                                <td>${i.title}</td>
-                                <td style="display: flex"><button value="${i.id}" type="submit" style="text-decoration: none;color: black; width: 40px; cursor: pointer" onclick="window.location = 'editRouteCourseItem?id=${i.id}'">Edit</button> 
-                                    <button name="btn_delete" value="${itemCourse.getCourseID()}" type="submit" style="margin-left: 10px; width: 20px; cursor: pointer" class="btn_delete"><ion-icon name="trash-outline"></ion-icon></button>
-                                </td>
-                            </tr>
-                        </c:forEach>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Khóa học</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${listRouteTypeItem}" var="i">
+                                    <tr>
+                                        <td class="p-3">${i.id}</td>
+                                        <td class="p-3">${i.nameRouteType}</td>
+                                        <td class="p-3">${i.nameRoutyTypeItem}</td>
 
-                    </tbody>
-                </table>
+                                        <td class="p-3">${i.title}</td>
+
+                                        <td style="display: flex
+                                            "><button name="btn_edit" onclick="window.location = ' editRouteCourseItem?id=${i.id}'" value="${i.id}" type="button" style="text-decoration: none;color: black; width: 40px; cursor: pointer;font-size: 14px">Edit</button> 
+                                            <div name="btn_delete" onclick="deleteRTI(${i.id})" value="${itemCourse.getCourseID()}"    class="btn_delete" style="text-align: center;justify-content: center;margin-left: 10px; width: 50px; cursor: pointer;height: 25px;border:1px #807171 solid;border(${i.id}-radius: 2px;background-c(${i.id})olor: #F0F0F0 ;font-size: 14px">Xóa</div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
             </div>
+
         </form>
-        <br><br><br><br>
-        <jsp:include page="footer.jsp"></jsp:include>
+
+
+        <div class="footer">
+            <jsp:include page="footer.jsp"></jsp:include>
+        </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+                                                function deleteRouteCourseItem(id) {
+                                                    if (confirm("Ban co dong y xoa khong?")) {
+                                                        window.location = "listRouteCourseItem?id=" + id;
+                                                    }
+                                                }
+
+                                                function  createRouteType() {
+                                                    window.location = 'CreateRouteCourse';
+                                                }
+                                                function deleteRTI(id) {
+                                                    if (confirm('Bạn có muốn xóa mục lục lộ trình này không?')) {
+                                                        window.location = 'listRouteCourseItem?mode=delete&id='+id;
+                                                    }
+                                                }
+                                                  function myFunction(object) {
+                                                    var value = object.value;
+                                                    window.location = 'listRouteCourseItem?stateFilter=' + value + '&mod=1';
+                                                }
+        </script>        
     </body>
 </html>

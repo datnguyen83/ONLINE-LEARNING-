@@ -29,6 +29,7 @@ create table Blog(
 	id int primary key,
     title nvarchar(100),
     topic nvarchar(100),
+    stateID int,
     content nvarchar(1000),
     numOfLikes nvarchar(100),
     date nvarchar(100),
@@ -159,9 +160,14 @@ create table Lesson(
 create table Question(
 	id int primary key,
     content nvarchar(1000),
-    `explain` nvarchar(1000),
+    `explain` nvarchar(1000)
+);
+create table LessonQuestion(
+	id int primary key AUTO_INCREMENT,
     lessonID int,
-    foreign key (lessonID)	references Lesson(id)
+    questionID int,
+    foreign key (lessonID)	references Lesson(id) ON DELETE CASCADE,
+    foreign key (questionID)	references Question(id) ON DELETE CASCADE
 );
 create table Answer(
 	id int primary key,
@@ -257,12 +263,12 @@ insert into RouteTypeItems(id, name,description,routeTypeID) Value(8,"Ngôn ng�
 insert into RouteTypeItems(id, name,description,routeTypeID) Value(9,"Sử dụng Ubuntu/Linux","Cách làm việc với hệ điều hành Ubuntu/Linux qua Windows Terminal & WSL. Khi đi làm, nhiều trường hợp bạn cần nắm vững các dòng lệnh cơ bản của Ubuntu/Linux.",2);
 insert into RouteTypeItems(id, name,description,routeTypeID) Value(10,"Libraries and Frameworks","Một ứng dụng Back-end hiện đại có thể rất phức tạp, việc sử dụng code thuần (tự tay code từ đầu) không phải là một lựa chọn tốt. Vì vậy các Libraries và Frameworks ra đời nhằm đơn giản hóa, tiết kiệm thời gian và tiền bạc để nhanh chóng tạo ra được sản phẩm cuối cùng.",2);
 -- Insert Course table
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(1, "HTML CSS từ Zero đến Hero", 1500, 0, 1,1, true);
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(2, "Lập trình JavaScript cơ bản", 1200, 0, 1,3, true);
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(3, "Xây Dựng Website với ReactJS", 1000, 0, 1,5, true);
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(4, "HTML CSS từ Zero đến Hero", 1500, 0, 2,7, true);
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(5, "Lập trình JavaScript cơ bản", 1200, 0, 2,8, true);
-insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(6, "Node & ExpressJS", 1000, 0, 2,10, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(1, "HTML CSS từ Zero đến Hero", 1500, 0, 1,null, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(2, "Lập trình JavaScript cơ bản", 1200, 0, 1,null, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(3, "Xây Dựng Website với ReactJS", 1000, 0, 1,null, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(4, "HTML CSS từ Zero đến Hero", 1500, 0, 2,null, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(5, "Lập trình JavaScript cơ bản", 1200, 0, 2,null, true);
+insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(6, "Node & ExpressJS", 1000, 0, 2,null, true);
 insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(7, "HTML CSS Pro", 100, 1000000, 1,null, true);
 insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(8, "Responsive Với Grid System", 100, 0, 1,null, true);
 insert into Course(id, title, numOfPeopleJoin, price, routeID,routeTypeItemsID, isPublished) Values(9, "Kiến Thức Nhập Môn IT", 100, 0, 1,null, true);
@@ -295,26 +301,28 @@ insert into Chapter(id, name, courseID) Values(4, "4. Đệm viền và khoang l
 insert into Chapter(id, name, courseID) Values(5, "5. Thuộc tính tạo nền", 1);
 
 -- Insert Lesson Table
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(1, "Bạn sẽ làm được gì sau khóa học", null, null, null, NOW(), 0, "video", 1, 1);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(2, "Tìm hiểu về HTML, CSS", null, null, null, NOW(), 0, "video", 1, 1);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(3, "Làm quen với Dev tools", null, null, null, NOW(), 0, "video", 1, 1);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(4, "Cài đặt VS Code, Page Ruler, extension", null, null, null, NOW(), 0, "video", 1, 1);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(5, "Khắc phục lỗi cài đặt Page Ruler Redux", null, null, null, NOW(), 0, "video", 1, 1);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(1, "Bạn sẽ làm được gì sau khóa học", null, "https://www.youtube.com/embed/R6plN3FvzFY", null, NOW(), 0, "video", 1, 1);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(2, "Tìm hiểu về HTML, CSS", null, "https://www.youtube.com/embed/zwsPND378OQ", null, NOW(), 0, "video", 1, 1);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(3, "Làm quen với Dev tools", null, "https://www.youtube.com/embed/7BJiPyN4zZ0", null, NOW(), 0, "video", 1, 1);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(4, "Cài đặt VS Code, Page Ruler, extension", null, "https://www.youtube.com/embed/ZotVkQDC6mU", null, NOW(), 0, "video", 1, 1);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(5, "Khắc phục lỗi cài đặt Page Ruler Redux", null, "https://www.youtube.com/embed/ZotVkQDC6mU", null, NOW(), 0, "video", 1, 1);
 
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(6, "Cấu trúc của 1 file HTML", null, null, null, NOW(), 0, "video", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(7, "Làm quen với màn thử thách", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(8, "Ví dụ cấu trúc file HTML", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(9, "Comments trong HTML", null, null, null, NOW(), 0, "video", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(10, "Ví dụ comments trong HTML", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(11, "Các thẻ HTML thông dụng", null, null, null, NOW(), 0, "video", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(12, "Ví dụ thẻ HTML thông dụng", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(13, "Bài tập thẻ HTML thông dụng #1", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(14, "Bài tập thẻ HTML thông dụng #2", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(15, "Bài tập thẻ HTML thông dụng #3", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(16, "Attribute trong HTML là gì?", null, null, null, NOW(), 0, "video", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(17, "Bài tập sử dụng Attribute #1", null, null, null, NOW(), 0, "practice", 1, 2);
-insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(18, "Cách quản lý thư mục dự án", null, null, null, NOW(), 0, "video", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(6, "Cấu trúc của 1 file HTML", null, "https://www.youtube.com/embed/LYnrFSGLCl8", null, NOW(), 0, "video", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(7, "Làm quen với màn thử thách", null, "https://www.youtube.com/embed/JG0pdfdKjgQ", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(8, "Ví dụ cấu trúc file HTML", null, "https://www.youtube.com/embed/AzmdwZ6e_aM", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(9, "Comments trong HTML", null, "https://www.youtube.com/embed/UYpIh5pIkSA", null, NOW(), 0, "video", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(10, "Ví dụ comments trong HTML", null, "https://www.youtube.com/embed/4J6d8cr0X48", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(11, "Các thẻ HTML thông dụng", null, "https://www.youtube.com/embed/NsSsJTg29oE", null, NOW(), 0, "video", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(12, "Ví dụ thẻ HTML thông dụng", null, "https://www.youtube.com/embed/aj-lD4XXr8A", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(13, "Bài tập thẻ HTML thông dụng #1", null, "https://www.youtube.com/embed/VbzOimNAOxE", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(14, "Bài tập thẻ HTML thông dụng #2", null, "https://www.youtube.com/embed/8X48l0CK5_4", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(15, "Bài tập thẻ HTML thông dụng #3", null, "https://www.youtube.com/embed/bv16wjxgV4U", null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(16, "Attribute trong HTML là gì?", null, "https://www.youtube.com/embed/hMWhvbCJIq8", null, NOW(), 0, "video", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(17, "Bài tập sử dụng Attribute #1", "https://www.youtube.com/embed/bVUN6nS82k8", null, null, NOW(), 0, "practice", 1, 2);
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(18, "Cách quản lý thư mục dự án", null, "https://www.youtube.com/embed/k1ZH5Mlj3tw", null, NOW(), 0, "video", 1, 2);
 
+-- feedbacklesson
+insert into Lesson(id, name, content, link, retry, date, numOfLikes, type, courseID, chapterID) Values(19, "Feedback 1", null, "https://forms.gle/KpmKasmvmaBG1e4M6", null, NOW(), 0, "feedback", 1, 1);
 -- Insert CourseLearnWhat Table
 insert into CourseLearnWhat(id, content, courseID) Values(1, "Biết cách xây dựng giao diện web với HTML, CSS", 1);    
 insert into CourseLearnWhat(id, content, courseID) Values(2, "Biết cách đặt tên class CSS theo chuẩn BEM", 1); 
@@ -372,10 +380,10 @@ insert into RouteTypeItemAndCourse(id , RouteTypeItemID,CourseID ) values(10,9,8
 insert into RouteTypeItemAndCourse(id , RouteTypeItemID,CourseID ) values(11,10,3);
 
 -- Insert into Blog table
-insert into Blog(id, title, topic, content, numOfLikes, date, userID) Values(1, "Hoc nua hoc mai", null, "abc ab ah ba bababababb ababa", 0, NOW(), 1);
+insert into Blog(id, title, topic,stateID , content, numOfLikes, date, userID) Values(1, "Hoc nua hoc mai", null,1, "abc ab ah ba bababababb ababa", 0, NOW(), 1);
 -- Insert into saved
 -- Insert into Quiz
-insert into Question(id, content, `explain`, lessonID) Values(1, "1 + may = bao nhieu", "La bao nhie ma khong biet thi hoc lai nha!!!", 7);
+insert into Question(id, content, `explain`) Values(1, "1 + may = bao nhieu", "La bao nhie ma khong biet thi hoc lai nha!!!");
 
 insert into Answer(id, content, quesID) Values(1, "10", 1);
 insert into Answer(id, content, quesID) Values(2, "2 may", 1);
@@ -384,7 +392,7 @@ insert into Answer(id, content, quesID) Values(4, "abc xyz", 1);
 
 insert into CorrectAnswer(id, content, quesID) Values(1, "chiu roi", 1); 
 
-insert into Question(id, content, `explain`, lessonID) Values(2, "6 - 2 = ?", "Ly thuyet la vay roi!!!", 7);
+insert into Question(id, content, `explain`) Values(2, "6 - 2 = ?", "Ly thuyet la vay roi!!!");
 
 insert into Answer(id, content, quesID) Values(5, "1", 2);
 insert into Answer(id, content, quesID) Values(6, "2", 2);
@@ -393,7 +401,7 @@ insert into Answer(id, content, quesID) Values(8, "4", 2);
 
 insert into CorrectAnswer(id, content, quesID) Values(2, "4", 2); 
 
-insert into Question(id, content, `explain`, lessonID) Values(3, "How many continent in the world?", "You can search gg.", 7);
+insert into Question(id, content, `explain`) Values(3, "How many continent in the world?", "You can search gg.");
 
 insert into Answer(id, content, quesID) Values(9, "5", 3);
 insert into Answer(id, content, quesID) Values(10, "6", 3);
@@ -402,11 +410,16 @@ insert into Answer(id, content, quesID) Values(12, "8", 3);
 
 insert into CorrectAnswer(id, content, quesID) Values(3, "7", 3); 
 
-insert into Question(id, content, `explain`, lessonID) Values(4, "Can cu thi bu gi?", "Rat de ma, khong can phai giai thich dau ne`...", 8);
+insert into Question(id, content, `explain`) Values(4, "Can cu thi bu gi?", "Rat de ma, khong can phai giai thich dau ne`...");
 
 insert into Answer(id, content, quesID) Values(13, "Sieng nang", 4);
 insert into Answer(id, content, quesID) Values(14, "thong minh", 4);
 insert into Answer(id, content, quesID) Values(15, "ko biet", 4);
+
+insert into LessonQuestion(lessonID, questionID) Values(7, 1);
+insert into LessonQuestion(lessonID, questionID) Values(7, 2);
+insert into LessonQuestion(lessonID, questionID) Values(7, 3);
+insert into LessonQuestion(lessonID, questionID) Values(8, 4);
 
 insert into CorrectAnswer(id, content, quesID) Values(4, "thong minh", 4); 
 
@@ -452,3 +465,8 @@ select * from RouteTypeItems;
 -- select q.id, c.title, l.name, q.content, q.explain from Question q join Lesson l on q.lessonID = l.id 
 
 -- delete from routeType where id =2
+-- select l.id, l.name, ct.name, c.title, q.id from lesson l join chapter ct on l.chapterID = ct.id join course c on ct.courseid = c.id join question q on l.id = q.lessonid
+select * from courseDetails;
+select b.id, b.title, b.topic, b.content, b.numOfLikes, b.date, b.userID, a.avatar, a.userName from Blog b join Account a on b.userID = a.id where b.stateId=1 and a.id=1
+ 
+ 

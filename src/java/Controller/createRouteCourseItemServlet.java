@@ -98,24 +98,6 @@ public class createRouteCourseItemServlet extends HttpServlet {
         
         String content = request.getParameter("content");
         String[] listTick = request.getParameterValues("courseTitle");
-//        if (routeTypeItemName.equals("") || routeTypeItemName == null) {
-//            request.setAttribute("errorMessage1", "Tên Lo trinh Item không thể để trống");
-//            request.getRequestDispatcher("createRouteCourseItem.jsp").forward(request, response);
-//            return;
-//        }
-//        if (content.equals("") || content == null) {
-//            request.setAttribute("errorMessage2", "Nội dung không thể để trống");
-//            request.setAttribute("routeName", routeTypeItemName);
-//            request.getRequestDispatcher("createRouteCourseItem.jsp").forward(request, response);
-//            return;
-//        }
-//        if (listTick == null || listTick.length == 0) {
-//            request.setAttribute("errorMessage3", "Hãy chọn khóa học cho lộ trình");
-//            request.setAttribute("routeName", routeTypeItemName);
-//            request.setAttribute("content", content);
-//            request.getRequestDispatcher("createRouteCourseItem.jsp").forward(request, response);
-//            return;
-//        }
         //Insert to DB
         //Insert into RouteTypeItem table
         RouteTypeItem routeTypeItem = new RouteTypeItem(id, routeTypeItemName, content, routeTypeID);

@@ -7,6 +7,7 @@ package Controller;
 import DAO.CourseDetailDAO;
 import DAO.ListRouteTypeItemDAO;
 import DAO.RouteTypeDAO;
+import DAO.RouteTypeItemAndCourseDAO;
 import DAO.RouteTypeItemDAO;
 import Model.Course;
 import Model.CourseDetail;
@@ -65,17 +66,27 @@ public class editRouteTypeItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //delete mode
         String listRouteTypeID = request.getParameter("id");
-//        ListRouteTypeItemDAO routeTypeItemDAO = new ListRouteTypeItemDAO();
-        CourseDetailDAO courseDetailDao = new CourseDetailDAO();
         RouteTypeDAO routeTypeDao = new RouteTypeDAO();
         RouteTypeItemDAO routeTypeItemDAO = new RouteTypeItemDAO();
+        CourseDetailDAO courseDetailDao = new CourseDetailDAO();
+        //Get routeTypeItem by id:
+        String rtid = routeTypeItemDAO.getRouteTypeIDByRouteTypeItemID(listRouteTypeID);
+        RouteType rt = routeTypeDao.getRouteTypeByID(rtid);
+        //Get list Course by RouteTypeItemID
+        ArrayList<CourseDetail> listCourse = courseDetailDao.getlistCourseByRouteTypeItemID(listRouteTypeID);
+
+//        ListRouteTypeItemDAO routeTypeItemDAO = new ListRouteTypeItemDAO();
         ArrayList<CourseDetail> listCourseDetail = courseDetailDao.getAllPublishedCourse();
         ArrayList<RouteType> routeTypeList = routeTypeDao.getAllRouteType();
         request.setAttribute("listCourseDetail", listCourseDetail);
         request.setAttribute("routeTypeList", routeTypeList);
         RouteTypeItem routeTypeItem = routeTypeItemDAO.getRouteTypeItemByID(listRouteTypeID);
         request.setAttribute("routeTypeItem", routeTypeItem);
+
+        request.setAttribute("routeType", rt);
+        request.setAttribute("listCourse", listCourse);
         request.getRequestDispatcher("editRouteCourseItem.jsp").forward(request, response);
     }
 
@@ -90,7 +101,67 @@ public class editRouteTypeItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        String routeTypeItemID = request.getParameter("routeTypeID");
+        String routeTypeID = request.getParameter("routeTypeName");
+        String courseName = request.getParameter("courseName");
+        String des = request.getParameter("content");
+        String[] listTick = request.getParameterValues("courseChecked");
+
+        RouteTypeItemDAO routeTypeItemDAO = new RouteTypeItemDAO();
+        //Edit routeTypeID courseName des
+        routeTypeItemDAO.EditRouteTypeItem(routeTypeID, courseName, des, routeTypeItemID);
+
+        //Edit listTick
+        //Get list Course by RouteTypeItemID
+        CourseDetailDAO courseDetailDao = new CourseDetailDAO();
+        ArrayList<CourseDetail> listCourse = courseDetailDao.getlistCourseByRouteTypeItemID(routeTypeItemID);
+
+        //
+        ArrayList<String> listCourseIDRemove = new ArrayList<>();
+        ArrayList<String> listCourseIDAdd = new ArrayList<>();
+        ArrayList<String> listTemp = new ArrayList<>();
+        RouteTypeItemAndCourseDAO rtiacd = new RouteTypeItemAndCourseDAO();
+
+        if (listTick != null && listTick.length > 0) {
+            //listQuestionIDRemove
+            for (CourseDetail course : listCourse) {
+                boolean flag = false;
+                for (String q : listTick) {
+                    if (q.equals(course.getId())) {
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    listCourseIDRemove.add(course.getId());
+                }
+            }
+            //listQuestionIDAdd
+            for (String q : listTick) {
+                boolean flag = false;
+                for (CourseDetail course : listCourse) {
+                    if (q.equals(course.getId())) {
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    listCourseIDAdd.add(q);
+                }
+            }
+            //add to RouteTypeItemAndCourse
+            for (String string : listCourseIDAdd) {
+                rtiacd.addRouteTypeItemAndCourse(routeTypeItemID, string);
+            }
+            //set lessonID to question
+            for (String string : listCourseIDRemove) {
+                rtiacd.removeRouteTypeItemAndCourse(routeTypeItemID, string);
+            }
+        }else{
+            for (CourseDetail course : listCourse) {
+                rtiacd.removeRouteTypeItemAndCourse(routeTypeItemID, course.getId());
+            }
+        }
+        response.sendRedirect("home?createRouteTypeStatus=edit routetype successfully");
     }
 
     /**

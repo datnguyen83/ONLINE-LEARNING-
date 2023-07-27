@@ -17,14 +17,14 @@
         <link rel="stylesheet" type="text/css" href="css/footer.css">
         <link rel="stylesheet" href="path/to/bootstrap.min.css">
         <style>
-            .all{
+/*            .all{
                 border: 1px solid black;
                 width: 797px;
                 height: 850px;
                 background-color: #fdcfc9 ;
                 border-radius: 2%;
                 margin-top: 60px
-            }
+            }*/
             .avatar{
                 border-radius: 10%;
                 width: 45px;
@@ -43,10 +43,10 @@
             }
 
             .item {
-                /*                width: 33.33%;*/
+/*                width: 33.33%;*/
                 height: 137px;
                 background-color: #eee;
-                /*                border: 2px solid none;*/
+/*                border: 2px solid none;*/
                 padding: 17px;
                 /*                transition: transform 0.2s ease-in-out;*/
                 cursor: pointer;
@@ -76,7 +76,7 @@
                 margin-left: 347px;
                 width: 100px;
                 height: 32px;
-                /*                margin-top: 15px;*/
+/*                margin-top: 15px;*/
                 cursor: pointer;
                 font-size: 19px;
             }
@@ -88,30 +88,33 @@
 
         </style>
     </head>
-    <body style="background-image: url(https://accounts.fullstack.edu.vn/static/media/f8_bg_auth_1920.b517075e98f3051de678.png);">
-        <jsp:include page="header.jsp"></jsp:include> 
-            <form action="editRouteCourseItem" method="post">
-                <div style="display: flex ;
-                     justify-content: center;align-items: center;
-
-                     ">
-                    <div class="all" style=" color: #053f1b">
-                        <div>
-                            <a href="/g4/home" >
-                                <img src="https://accounts.fullstack.edu.vn/assets/icon/f8_icon.png" alt="Avatar"  class="avatar" >
-                            </a>
-                            <h1 class="h1"> 
-                                Thêm mục lục lộ trình học</h1>  
-                        </div>  
-                        <div class="nhap" style="margin-top: 35px;display: flex">Lộ trình học   
-                            <a style="color: red">*</a>
-                            <input value="${routeTypeItem.id}"  name="routeTypeID" id="routeTypeID" type="hidden">
-                            <select  name="routeTypeName" class="routeTypeName" value="${routeTypeItem.routeTypeID}"  required >
-                                <option disabled selected value="">Chọn một giá trị</option>
-                                <c:forEach items="${routeTypeList}" var="r">
-                                    <option value="">
-                                    ${r.name}
-                                </option>
+    <body >
+          <jsp:include page="header.jsp"></jsp:include> 
+        <form action="editRouteCourseItem" method="post">
+            <div style="display: flex ;">
+                    <div style="margin-left: 30px;margin-top: 30px">
+                    <jsp:include page="sidebar.jsp"></jsp:include>
+                    </div>
+                    <div style="margin-left: 300px">
+                        <div style="display: flex ;
+                 justify-content: center;align-items: center;margin-top: 30px
+               
+                ">
+                <div class="all" style=" color: #053f1b">
+                    <div>
+<!--                        <a href="/g4/home" >
+                            <img src="https://accounts.fullstack.edu.vn/assets/icon/f8_icon.png" alt="Avatar"  class="avatar" >
+                        </a>-->
+                        <h1 class="h1"> 
+                            Edit mục lục lộ trình học</h1>  
+                    </div>  
+                    <div class="nhap" style="margin-top: 35px;display: flex">Lộ trình học   
+                        <a style="color: red">*</a> 
+                          <input value="${routeTypeItem.id}"  name="routeTypeID" id="routeTypeID" type="hidden">
+                        <select name="routeTypeName" class="routeTypeName" required >
+                            <option disabled selected value="">Chọn một giá trị</option>
+                           <c:forEach items="${routeTypeList}" var="r">
+                                <option <c:if test="${routeType.id == r.id}">selected</c:if> value="${r.id}">${r.name}</option>
                             </c:forEach>
                         </select>
 
@@ -123,23 +126,25 @@
                                 <a style="color: red">*</a>
                             </div>
                             <input name="courseName" value="${routeTypeItem.name}" type="text" class="form-input" style="width: 379px ; margin-left: 154px;height: 25px" maxlength="100" required> 
-
                         </div>
-                        
+
                         <br>
                         <div class="nhap" style="display: flex">
                             <div >Giới thiệu về mục lục 
                                 <a style="color: red">*</a>
                             </div>
-                            <textarea  name="content" cols="49" rows="5" style="margin-left: 91px" maxlength="2000" required>value="${routeTypeItem.description}"</textarea>
+                            <textarea name="content" cols="49" rows="5" style="margin-left: 91px" maxlength="2000" required>${routeTypeItem.description}</textarea>
                         </div>
 
                         <br>
                         <div class="nhap">Các khóa học:</div>
-                        <div  class="container" >
-                            <c:forEach items="${listCourseDetail}" var="i">
+                        <div  class="container">
+                           <c:forEach items="${listCourseDetail}" var="i">
                                 <a  class="item">
-                                    <input type="checkbox" style="cursor: pointer;" name="courseTitle" value="${i.id}" />${i.title}
+                                    <input <c:forEach items="${listCourse}" var="c">
+                                            <c:if test="${c.id == i.id}">checked</c:if>
+                                        </c:forEach>
+                                        type="checkbox" style="cursor: pointer;" name="courseChecked" value="${i.id}" />${i.title}
                                     <img src="${i.image}" style="width: 119px ; height: 74px ; border-radius: 10px;" >
                                 </a>
                             </c:forEach>
@@ -148,7 +153,10 @@
                     </div>
                     <input type="submit" Value="Submit" class="submit" />
                 </div>
-            </div>
+            </div> 
+                    </div>
+                </div>
+           
         </form>
         <script>
             const form = document.querySelector('form');
@@ -170,7 +178,7 @@
                 }
             });
         </script>
-        <br><br><br><br>
+         <br><br><br><br>
         <jsp:include page="footer.jsp"></jsp:include>
     </body>
 </html>

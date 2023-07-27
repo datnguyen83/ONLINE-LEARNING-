@@ -5,11 +5,14 @@
 package Controller;
 
 import DAO.ListRouteTypeItemDAO;
+import DAO.RouteTypeItemDAO;
+import Model.RouteType;
         import Model.listRouteTypeItem;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,10 +63,30 @@ public class listRouteTypeItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //               processRequest(request, response);
+        String id = request.getParameter("id");
+        String mode = request.getParameter("mode");
+         ListRouteTypeItemDAO listRouteTypeItemDao = new ListRouteTypeItemDAO();
+        if(mode!=null && mode.equals("delete")){
+            RouteTypeItemDAO rtidao = new RouteTypeItemDAO();
+            rtidao.deleteRoutyTypeItemById(id);
+        }
+        // Filter 
+        if (request.getParameter("mod") != null && request.getParameter("mod").equals("1") && !request.getParameter("stateFilter").equals("0")) {
+            String stateFilter = request.getParameter("stateFilter");
+            ArrayList<listRouteTypeItem> listRouteTypeItem = listRouteTypeItemDao.getRouteTypeItemDetailByID(stateFilter);
+            request.setAttribute("listRouteTypeItem", listRouteTypeItem);
+            request.setAttribute("selected", stateFilter);
+        } else {
 
-        ListRouteTypeItemDAO listRouteTypeItemDao = new ListRouteTypeItemDAO();
-        ArrayList<listRouteTypeItem> listRouteTypeItem = listRouteTypeItemDao.getAllRouteTypeItemDetail();
-        request.setAttribute("listRouteTypeItem", listRouteTypeItem);
+            ArrayList<listRouteTypeItem> listRouteTypeItem = listRouteTypeItemDao.getAllRouteTypeItemDetail();
+            request.setAttribute("listRouteTypeItem", listRouteTypeItem);
+            request.setAttribute("selected", "0");
+        }
+
+        // Get list route type
+        ArrayList<RouteType> listRouteType = listRouteTypeItemDao.getListRouteType();
+
+        request.setAttribute("listRouteType", listRouteType);
         request.getRequestDispatcher("listRouteCourseItem.jsp").forward(request, response);
     }
 

@@ -31,7 +31,46 @@ public class RouteTypeItemDAO {
         }
         return listR;
     }
+    //EditRouteTypeItem
+        public void EditRouteTypeItem(String routeTypeID, String courseName, String des, String routeTypeItemID) {
+        ArrayList<RouteTypeItem> listR = new ArrayList<>();
+        String sql = "Update RouteTypeItems set name = ?, description = ?, routeTypeID = ? where id = ?";
+        try {
+            PreparedStatement pstm = DBContext.getConnection().prepareStatement(sql);
+            pstm.setString(1, courseName);
+            pstm.setString(2, des);
+            pstm.setString(3, routeTypeID);
+            pstm.setString(4, routeTypeItemID);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("EditRouteTypeItem: " + e.getMessage());
+        }
+    }
+    //deleteRoutyTypeItemById
+     public void deleteRoutyTypeItemById(String routeTypeItemID) {
+        String sql = "delete from routeTypeItems where id = "+routeTypeItemID;
+        try {
+            PreparedStatement pstm = DBContext.getConnection().prepareStatement(sql);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("deleteRoutyTypeItemById: " + e.getMessage());
+        }
+    }  
     
+    //getRouteTypeIDByRouteTypeItemID
+        public String getRouteTypeIDByRouteTypeItemID(String routeTypeItemID) {
+        String sql = "select routeTypeID from RouteTypeItems where id = "+routeTypeItemID;
+        try {
+            PreparedStatement pstm = DBContext.getConnection().prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            System.out.println("getRouteTypeIDByRouteTypeItemID: " + e.getMessage());
+        }
+        return null;
+    }
     //getCourseByRouteTypeItemID
     public ArrayList<CourseDetail> getCourseDetailByRouteTypeItemID(String routeTypeID) {
         ArrayList<CourseDetail> listC = new ArrayList<>();

@@ -6,6 +6,7 @@ package DAO;
 
 import Model.Chapter;
 import Model.Lesson;
+import Model.LessonVM;
 import Model.QAOfLesson;
 import Model.RepQAOfLesson;
 import java.sql.Connection;
@@ -21,8 +22,78 @@ import java.util.logging.Logger;
  * @author dell
  */
 public class LessonDAO {
-    
+
     Connection con = null;
+
+    //getAllLessonVMByCourseIDAndType
+    public ArrayList<LessonVM> getAllLessonVMByCourseIDAndType(String type, String courseID) {
+        ArrayList<LessonVM> list = new ArrayList<>();
+        String sql = "select l.id, l.name, ct.name, c.title from lesson l join chapter ct on l.chapterID = ct.id join course c on ct.courseid = c.id\n"
+                + " where l.courseID = ? and l.type = ?";
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.setString(1, courseID);
+            pstm.setString(2, type);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                list.add(new LessonVM(rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllLessonVMByCourseID: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+
+    //getAllLessonVMByID
+    public ArrayList<LessonVM> getAllLessonVMByID(String id) {
+        ArrayList<LessonVM> list = new ArrayList<>();
+        String sql = "select l.id, l.name, ct.name, c.title, q.id from lesson l join chapter ct on l.chapterID = ct.id join course c on ct.courseid = c.id join question q on l.id = q.lessonid\n"
+                + "where l.type = 'practice' and l.id = " + id;
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                list.add(new LessonVM(rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllLessonVMByID: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+
+    //Delete lesson by lesID
+    public void deleteLessonByLesID(String lesID) {
+        String sql = "Delete from Lesson where id = " + lesID;
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("deleteLessonByLesID: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public ArrayList<Lesson> getAllLessons() {
         ArrayList<Lesson> list = new ArrayList<>();
@@ -45,7 +116,7 @@ public class LessonDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllBlogByAccountID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -77,7 +148,7 @@ public class LessonDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllBlogByAccountID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -85,6 +156,42 @@ public class LessonDAO {
             }
         }
         return list;
+    }
+
+    //Get all lessonVM by type
+    public ArrayList<LessonVM> getAllLessonVMByType(String type) {
+        ArrayList<LessonVM> list = new ArrayList<>();
+        String sql = "select l.id, l.name, ct.name, c.title from lesson l join chapter ct on l.chapterID = ct.id join course c on ct.courseid = c.id\n"
+                + " where l.type = ?";
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.setString(1, type);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                list.add(new LessonVM(rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllLessonByType: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        LessonDAO l = new LessonDAO();
+        Lesson le = l.getLessonByID(1);
+        System.out.println(le);
+        ArrayList<LessonVM> lVM = l.getAllLessonVMByType("practice");
+        for (LessonVM lessonVM : lVM) {
+            System.out.println(lessonVM);
+        }
     }
 
     public int getTotalLesson(int courseID) {
@@ -99,7 +206,7 @@ public class LessonDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllBlogByAccountID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -130,7 +237,7 @@ public class LessonDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllBlogByAccountID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -157,7 +264,7 @@ public class LessonDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllLessonByCourseID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -182,11 +289,11 @@ public class LessonDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("addQAOfLesson: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -209,11 +316,11 @@ public class LessonDAO {
 
         } catch (Exception e) {
             System.out.println("getListQAOfLesson: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return listQA;
@@ -235,11 +342,11 @@ public class LessonDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("addRepQAOfLesson: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -260,8 +367,8 @@ public class LessonDAO {
                         String.valueOf(rs.getInt(5)), String.valueOf(rs.getInt(6))));
             }
         } catch (Exception e) {
-            System.out.println("getListRepQAOfLesson: "+e.getMessage());
-        }finally {
+            System.out.println("getListRepQAOfLesson: " + e.getMessage());
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -269,6 +376,78 @@ public class LessonDAO {
             }
         }
         return listRepQA;
+    }
+
+    public ArrayList<Chapter> getAllChapterByCID(int courseID) {
+        ArrayList<Chapter> list = new ArrayList<>();
+        String sql = "SELECT * FROM chapter where courseID = ?";
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.setInt(1, courseID);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                list.add(new Chapter(rs.getString(1), rs.getString(2)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllBlogByAccountID: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
+    }
+
+    public void updateLesson(String lessonId, String name, String type, String link, String chapterId) {
+
+        try {
+            String strInsert = "UPDATE Lesson\n"
+                    + "SET name = ?, type = ?, link = ?, chapterId = ?\n"
+                    + "WHERE id = ?;";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strInsert);
+            pstm.setString(1, name);
+            pstm.setString(2, type);
+            pstm.setString(3, link);
+            pstm.setString(4, chapterId);
+            pstm.setString(5, lessonId);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("updateLesson: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    public int getMinLessonIdByCourseID(String cID) {
+        //SELECT MIN(column_name) AS min_id FROM my_table;
+        int id = 0;
+        try {
+            String strInsert = "SELECT MIN(id) FROM Lesson where courseId=?;";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strInsert);
+            pstm.setString(1, cID);
+            pstm.execute();
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                id=rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("updateLesson: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return id;
     }
 
 }

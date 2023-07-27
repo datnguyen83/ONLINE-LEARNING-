@@ -40,12 +40,12 @@ public class LearnDAO {
 
     public ArrayList<CourseDetail> getCourseList() {
         ArrayList<CourseDetail> listCourse = new ArrayList<>();
-        String sql = "SELECT c.id, c.title, c.price, cd.detailCourseDes, cd.level FROM Course c LEFT JOIN CourseDetail cd ON c.id = cd.courseId";
+        String sql = "SELECT c.id, c.title, c.price, c.isPublished, cd.level FROM Course c LEFT JOIN CourseDetail cd ON c.id = cd.courseId";
         try {
             pstm = DBContext.getConnection().prepareStatement(sql);
             rs = pstm.executeQuery();
             while (rs.next()) {
-                listCourse.add(new CourseDetail(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+                listCourse.add(new CourseDetail(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getBoolean(4), rs.getString(5)));
             }
         } catch (Exception e) {
             System.out.println("getCourseList: " + e.getMessage());
@@ -191,7 +191,7 @@ public class LearnDAO {
 //        System.out.println(listCourse);
 //        LearnDAO la = new LearnDAO();
         String courseId = "1";
-        ArrayList<Lesson> listL = la.getLessonByCourseIDAndChapterID( "1");
+        ArrayList<Lesson> listL = la.getLessonByChapterId("1");
         System.out.println(listL);
 //        Course inforCourse = la.getCourseInfor(courseId);
 //        System.out.println(inforCourse.getTitle());
@@ -647,5 +647,69 @@ public class LearnDAO {
             }
         }
         return listA;
+    }
+
+    public ArrayList<Lesson> getLessonByChapterId(String chapterId) {
+        ArrayList<Lesson> listA = new ArrayList<>();
+        String sql = "select * from Lesson where chapterId=?";
+        try {
+            con = DBContext.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1, chapterId);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                listA.add(new Lesson(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6),
+                        rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllLesson: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listA;
+    }
+
+    public void showCourse(String parameter) {
+        try {
+            String strUpdate = "UPDATE Course \n"
+                    + "SET isPublished = true\n"
+                    + "where id = ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strUpdate);
+            pstm.setString(1, parameter);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("showCourse: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void hideCourse(String parameter) {
+        try {
+            String strUpdate = "UPDATE Course \n"
+                    + "SET isPublished = false\n"
+                    + "where id = ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strUpdate);
+            pstm.setString(1, parameter);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("hideCourse: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

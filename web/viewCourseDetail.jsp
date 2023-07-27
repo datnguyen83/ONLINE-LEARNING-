@@ -66,8 +66,8 @@
                     </div>
 
                     <h3 style="margin-top: 30px; font-size: 27px;">Nội dung khóa học</h3>
-                    <div class="button-container">
-                        <p id="expand-all-button" class="expand-button" style="padding-right: 20px;cursor: pointer;float: right; color: #f05123;font-weight: bold">Mở rộng tất cả</p>
+                    <div class="button-container" style="margin-bottom: 15px">
+                        <p id="expand-all-button" class="expand-button" style="margin-bottom: 10px;padding-right: 20px;cursor: pointer;float: right; color: #f05123;font-weight: bold">Mở rộng tất cả</p>
                     </div>
 
                     <div class="course-outline" style="padding-top: 10px">
@@ -77,8 +77,13 @@
                                 <ul class="lessons">
                                     <c:forEach items="${listLesson}" var="lesson">
                                         <c:if test="${chapter.id == lesson.chapterID}">
+                                            
+                                            
                                             <div style="display: flex;border-bottom: 1px solid gray">
-                                                <img style="width: 12px;height: 12px;margin-top: 14px;margin-right: 10px" src="image/video_logo.png" alt="alt"/>
+                                                <i class="<c:if test="${lesson.type == 'video'}">fa-solid fa-circle-play</c:if>
+                                                   <c:if test="${lesson.type == 'practice'}">fa-regular fa-file-audio</c:if>
+                                                   <c:if test="${lesson.type == 'feedback'}">fa fa-commenting-o</c:if>"
+                                                   style="margin-right: 4px; margin-top: 15px"></i>
                                                 <li style="margin-top: 10px;list-style-type: none;" class="lesson">${lesson.name}</li>
                                             </div>
 
@@ -110,17 +115,16 @@
                                 <div class="position-absolute top-0 start-0 end-0 bottom-0 rounded-4"
                                      style="background-color: #1c1d1f40;">
                                 </div>
-                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-play"
+<!--                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-play"
                                      style="width: 60px; height: 60px; bottom: 50%; right: 50%; transform: translateX(50%) translateY(50%);"
                                      class="svg-inline--fa fa-circle-play CourseDetail_icon__sLJtd position-absolute"
                                      role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path fill="#000000"
                                       d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z">
                                 </path>
-                                </svg>
+                                </svg>-->
                                 <div class="position-absolute start-0 end-0"
                                      style="color: white; font-weight: 700; bottom: 12px;">
-                                    Xem giới thiệu khóa học
                                 </div>
                             </div>
                             <h2 style="color: #f05123;">
@@ -147,10 +151,6 @@
                                 <div>
                                     <i class="fa-solid fa-film me-3"></i>
                                     Tổng số ${totalLesson} bài học
-                                </div>
-                                <div>
-                                    <i class="fa-solid fa-clock me-3"></i>
-                                    Thời lượng ${listCourseDes.get(0).time} giờ
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-battery-full me-3"></i>

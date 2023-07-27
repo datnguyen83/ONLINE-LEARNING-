@@ -35,6 +35,7 @@ function add2() {
     inputTag.style.width = '550px';
     inputTag.style.height = '26px';
     inputTag.style.marginBottom = '10px';
+    inputTag.style.marginRight='260px';
     inputTag.type = "text";
     inputTag.name = "chapter";
     inputTag.className = "chapter";

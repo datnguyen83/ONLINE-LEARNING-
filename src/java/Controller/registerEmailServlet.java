@@ -84,7 +84,25 @@ public class registerEmailServlet extends HttpServlet {
         String name = request.getParameter("username");
         String pass = request.getParameter("password");
         String confirmationCode = request.getParameter("confirmationCode");
+        AccountDAO accountDAO = new AccountDAO();
         HttpSession session = request.getSession();
+        if(request.getParameter("checkEmail")!=null){
+            if (accountDAO.checkUserEmail(email)) {
+                    String errorMessage1 = "Email đã tồn tại. Vui lòng sử dụng email khác!";
+                    request.setAttribute("errorMessage1", errorMessage1);
+                    request.setAttribute("email", email);
+                    request.setAttribute("username", name);
+                    request.setAttribute("password", pass);
+                    request.getRequestDispatcher("registerEmail.jsp").forward(request, response);
+                }else{
+                String errorMessage2 = "Email chưa được sử dụng!";
+                    request.setAttribute("errorMessage2", errorMessage2);
+                    request.setAttribute("email", email);
+                    request.setAttribute("username", name);
+                    request.setAttribute("password", pass);
+                    request.getRequestDispatcher("registerEmail.jsp").forward(request, response);
+            }
+        }
         if (request.getParameter("sendCodeBtn") != null) {
             String randomCode = generateRandomCode();
             session.setAttribute("confirmationCode", randomCode);
@@ -103,23 +121,28 @@ public class registerEmailServlet extends HttpServlet {
             // Redirect back to the registration page
             request.getRequestDispatcher("registerEmail.jsp").forward(request, response);
         } else if (request.getParameter("registerBt") != null) {
+            
+            
             String savedCode = (String) session.getAttribute("confirmationCode");
             if (confirmationCode.equals(savedCode)) {
                 // Registration successful
                 // Perform further actions (e.g., store user data, send welcome email)
 
-                AccountDAO accountDAO = new AccountDAO();
+                
                 if (accountDAO.checkUserEmail(email)) {
                     String errorMessage = "Email đã tồn tại. Vui lòng sử dụng email khác!";
                     request.setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("email", email);
+                    request.setAttribute("username", name);
+                    request.setAttribute("password", pass);
                     request.getRequestDispatcher("registerEmail.jsp").forward(request, response);
                 } else {
                     //ma hoa mat khau de luu tru
-                    String encrypted= passwordEncryption.encoder(pass);
+                    String encrypted = passwordEncryption.encoder(pass);
                     //add to databse
                     String username = generateRandomUsername();
-                    accountDAO.createEmail(username, encrypted, email,name,"image/default_cover.png","2");
-                    
+                    accountDAO.createEmail(username, encrypted, email, name, "image/default_cover.png", "2");
+
                     response.sendRedirect("home");// Redirect to success page
                 }
 
@@ -156,7 +179,6 @@ public class registerEmailServlet extends HttpServlet {
 
         return username.toString();
     }
-
 
     /**
      * Returns a short description of the servlet.

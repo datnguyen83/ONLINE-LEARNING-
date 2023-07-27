@@ -104,7 +104,7 @@
                                          type="button" data-bs-toggle="collapse" data-bs-target="#collapse${c.id}"
                                          aria-expanded="true" aria-controls="collapse${c.id}">
                                         <div class="d-flex flex-column">
-                                            <div>${c.id}. ${c.name}</div>
+                                            <div>${c.name}</div>
                                             <p class="mb-0" style="font-size: 13px; font-weight: 300;">
                                                 <!--                                            5/6 | 19:39-->
                                             </p>
@@ -124,7 +124,7 @@
                                                     <c:if test="${selectedID != l.id}">course__hover cursor-pointer </c:if>
                                                         d-flex justify-content-between align-items-center gap-2">
                                                         <div style="font-size: 13px; font-weight: 300;">
-                                                            <p class="mb-1">${l.id}. ${l.name}</p>
+                                                            <p class="mb-1">${l.name}</p>
                                                         <div style="font-size: 12px;">
                                                             <i class="fa-solid fa-circle-play" style="margin-right: 4px;"></i>
                                                             03:15
@@ -139,11 +139,11 @@
                                             </c:if>
                                             <c:if test="${l.type == 'practice'}">
                                                 <!-- Lesson coming soon, if else to use, different id to show left detail -->
-                                                <li onclick="window.location = 'doingQuizLesson?courseID=${cid}&lessonID=${l.id}'"
+                                                <li onclick="window.location = 'doingQuestion?courseID=${cid}&lessonID=${l.id}'"
                                                     class="accordion-body course__hover cursor-pointer
                                                     d-flex justify-content-between align-items-center gap-2">
                                                     <div style="font-size: 13px; font-weight: 300;">
-                                                        <p class="mb-1">${l.id}. ${l.name}</p>
+                                                        <p class="mb-1">${l.name}</p>
                                                         <div style="font-size: 12px;">
                                                             <i class="fa-regular fa-file-audio" style="margin-right: 4px;"></i>
                                                             00:00
@@ -158,7 +158,7 @@
                                                     class="accordion-body course__hover cursor-pointer
                                                     d-flex justify-content-between align-items-center gap-2">
                                                     <div style="font-size: 13px; font-weight: 300;">
-                                                        <p class="mb-1">${l.id}. ${l.name}</p>
+                                                        <p class="mb-1">${l.name}</p>
                                                         <div style="font-size: 12px;">
                                                             <i class="fa fa-commenting-o" style="margin-right: 4px;"></i>
                                                             1:00

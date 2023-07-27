@@ -80,6 +80,15 @@ public class CourseController extends HttpServlet {
             la.deleteCourseByCID(courseID);
             request.setAttribute("savedBlogStatus", "Ðã xóa khóa học");
         }
+        if (request.getParameter("stateID") != null && request.getParameter("stateID").equals("1")) {
+            /* Update state of Blog */
+            la.showCourse(request.getParameter("courseId"));
+            request.setAttribute("savedBlogStatus1", "Course is Published");
+        } else if (request.getParameter("stateID") != null && request.getParameter("stateID").equals("2")) {
+            /* Click hide Blog */
+            la.hideCourse(request.getParameter("courseId"));
+            request.setAttribute("savedBlogStatus2", "Course is Hide");
+        }
         
         
         ArrayList<CourseDetail> listCourse = la.getCourseList();
@@ -109,11 +118,12 @@ public class CourseController extends HttpServlet {
 //            request.getRequestDispatcher("editCourseServlet").forward(request, response);
 //        }
         if (request.getParameter("btn_delete") != null) {
-            String courseId = request.getParameter("cid");
+            String courseId = request.getParameter("btn_delete");
             cd=la.getCourseInfor(courseId);
             request.setAttribute("btn_delete", request.getParameter("btn_delete"));
             request.setAttribute("course", cd);            
         }
+        
         
         doGet(request, response);
     }

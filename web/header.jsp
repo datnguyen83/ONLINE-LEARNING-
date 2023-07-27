@@ -155,6 +155,7 @@
                                         <div onclick="window.location = 'blogSaved'">Bài viết đã lưu</div>
                                         <div onclick="window.location = 'account'" style="display: <c:if test="${!(sessionScope.account.roleID != null && sessionScope.account.roleID == 1)}">none</c:if>">Danh sách người dùng</div>
                                         <div onclick="window.location = 'commentManage'" style="display: <c:if test="${!(sessionScope.account.roleID != null && sessionScope.account.roleID == 1)}">none</c:if>">Danh sách bình luận</div><hr>
+                                        <div onclick="window.location = 'blogManagementServlet'" style="display: <c:if test="${!(sessionScope.account.roleID != null && sessionScope.account.roleID == 1)}">none</c:if>">Danh sách Blog</div><hr>
                                             <div onclick="window.location = 'generalManagerment.jsp'" style="display: <c:if test="${!(sessionScope.account.roleID != null && sessionScope.account.roleID == 1)}">none</c:if>">Quản lí chung</div>
 
 

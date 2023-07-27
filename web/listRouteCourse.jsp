@@ -18,64 +18,102 @@
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="path/to/unicons/css/unicons.css">
+        <script src="path/to/unicons/js/unicons.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/unicons/css/unicons.css">
+        <script src="${pageContext.request.contextPath}/resources/unicons/js/unicons.js"></script>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/unicons/css/unicons.css">
+        <script src="<%= request.getContextPath() %>/resources/unicons/js/unicons.js"></script>
+
         <style>
-             .add_btn input {
-                 display: flex;
-                 justify-content: center;
-                 text-align: center;
-                width: 60px;
-                height: 40px;
+            .table1, th, td {
+                border: 1px solid #dee2e6;
+                vertical-align: top;
+                text-align: left;
+                padding: 8px;
+                border-collapse: collapse;
+            }
+
+            .mb-0 tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .mb-0 tr:hover {
+                background-color: #ddd;
+            }
+
+            thead tr th {
+                text-align: center;
+            }
+
+            .add_btn {
+
+                width: 183px;
+                height: 33px;
                 background: #4CAF50;
-                color: white;
+                font-size: 17px;
                 margin-bottom: 10px;
-                border-radius: 8px;
+                border-radius: 4px;
                 border: none;
                 cursor: pointer;
-                margin-left: 70px;
+                font-size: 20px;
             }
         </style>
     </head>
-    <body style="background-image: url('image/anhnen.png')">
+    <body>
         <jsp:include page="header.jsp"></jsp:include>
-        <form action="listRouteCourse" method="post" id="form">
-                <h2 style="color: #F0F0F0">DANH SÁCH Khóa Học</h2>
-                <div class="add_btn" >
-                         <input onclick="window.location = 'createRouteCourse'" type="button" value="Add" />
+            <form action="listRouteCourse" method="post" id="form">
+                <div style="display: flex">
+                    <div style="margin-left: 10px;margin-top: 30px">
+                    <jsp:include page="sidebar.jsp"></jsp:include>
+                    </div>
+                    <div>
+                        <h2 style="color:black;font-size: 30px">DANH SÁCH Khóa Học</h2>
+                        <div class="table-responsive shadow rounded m-5">
+                            <table id="table" class="  table table-center bg-white mb-0" style="font-size : 18px">
+                                <p class="add_btn" style="display: flex; justify-content: center; align-items: center;">
+                                    <a onclick="window.location = 'createRouteCourse'" style="color:white;text-decoration:none">Tạo lộ trình học</a>
+                                </p>
+
+                                <thead>
+                                    <tr style="background-color:#396cf0; color: #ffffff">
+                                        <th class="border-bottom p-3" style="min-width: 120px;">ID</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Tên lộ Trình</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Ảnh</th>
+                                        <th class="border-bottom p-3" style="min-width: ">Giới thiệu về lộ trình</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Ẩn / hiện</th>
+                                        <th class="border-bottom p-3" style="min-width: 120px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${listRouteType}" var="i">  
+                                    <tr>
+                                        <td class="p-3">${i.id}</td>
+                                        <td class="p-3">${i.name}</td>
+                                        <td class="p-3">${i.image}</td>
+                                        <td class="p-3">${i.description1}</td>
+                                        <c:choose>
+                                            <c:when test="${i.status != 0}">
+                                                <td class="p-3"><button onclick="window.location='listRouteCourse?routeTypeID=${i.id}&mod=1'" type="button">Show</button></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td class="p-3"><button onclick="window.location='listRouteCourse?routeTypeID=${i.id}&mod=2'" type="button">Hide</button></td>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <td style="display: flex
+                                            "><button name="btn_edit" onclick="window.location = 'editRouteType?id=${i.id}'" value="${i.id}" type="button" style="text-decoration: none;color: black; width: 40px; cursor: pointer;font-size: 14px">Edit</button> 
+                                            <div name="btn_delete" onclick="deleteRouteCourse(${i.id})" value="${i.id}"    class="btn_delete" style="text-align: center;justify-content: center;margin-left: 10px; width: 50px; cursor: pointer;height: 25px;border:1px #807171 solid;border-radius: 2px;background-color: #F0F0F0 ;font-size: 14px">Xóa</div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
-                
-           
-                <div class="table-wrapper">
-                    <table class="fl-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên lộ trình</th>
-                                <th>Ảnh</th>
-                                <th>Giới thiệu lộ trình</th>
-                                <th>Ẩn / hiện</th>
-                                <th>BUTTON</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>           
-                        <c:forEach items="${listRouteType}" var="i">  
-                            <tr>
 
-                                <td >${i.id}</td>
-
-                                <td>${i.name}</td>
-                                <td>${i.image}</td>
-                                <td>${i.description1}</td>
-                                <td>${i.status}</td>
-
-                                <td style="display: flex
-                                    "><button name="btn_edit" onclick="window.location = 'editRouteCourse?id=${i.id}'" value="${i.id}" type="button" style="text-decoration: none;color: black; width: 40px; cursor: pointer">Edit</button> 
-                                    <div name="btn_delete" onclick="deleteRouteCourse(${i.id})" value="${i.id}"    class="btn_delete" style="text-align: center;justify-content: center;margin-left: 10px; width: 50px; cursor: pointer;height: 25px;border:1px #807171 solid;border-radius: 2px;background-color: #F0F0F0 ">Xóa</div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    <tbody>
-                </table>
             </div>
         </form>
 
@@ -86,15 +124,15 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script>
-                                 function deleteRouteCourse(id) {
-                                    if (confirm("Ban co dong y xoa khong?")) {
-                                        window.location="listRouteCourse?id="+id;
-                                    }
-                                }
-                                
-                                function  createRouteType() {
-                                            window.location = 'CreateRouteCourse';
-                                        }
+                                                function deleteRouteCourse(id) {
+                                                    if (confirm("Ban co dong y xoa khong?")) {
+                                                        window.location = "listRouteCourse?id=" + id;
+                                                    }
+                                                }
+
+                                                function  createRouteType() {
+                                                    window.location = 'CreateRouteCourse';
+                                                }
         </script>        
     </body>
 </html>

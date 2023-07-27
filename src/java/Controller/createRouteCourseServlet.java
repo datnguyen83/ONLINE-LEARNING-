@@ -11,6 +11,7 @@ import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,12 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
+@MultipartConfig(
+        //        location = "C:\\Users\\Admin\\Downloads\\g4-Iteration_1_Submit\\g4-Iteration_1_Submit\\web\\image",
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 public class createRouteCourseServlet extends HttpServlet {
 
     /**
@@ -129,7 +136,7 @@ public class createRouteCourseServlet extends HttpServlet {
         }
             routeType = new RouteType(id + "", routeName, "./image/" + filePart.getSubmittedFileName(), content1, content2,status);
             d.insertRouteType(routeType);
-            response.sendRedirect("home?createRouteTypeStatus=Create routetype successfully");
+            response.sendRedirect("listRouteCourse?createRouteTypeStatus=Create routetype successfully");
         }
     }
 

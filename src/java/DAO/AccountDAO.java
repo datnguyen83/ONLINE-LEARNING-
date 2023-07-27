@@ -11,15 +11,19 @@ import Model.Setting;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author TIEN DAT
  */
 public class AccountDAO {
+    Connection connect = null;
 
     public ArrayList<Account> getAllAccount() {
         ArrayList<Account> listA = new ArrayList<>();
@@ -92,7 +96,8 @@ public class AccountDAO {
         try {
             /* Select list account from Account table */
             String strSelect = "select * from Account";
-            pstm = getConnection().prepareStatement(strSelect);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strSelect);
             rs = pstm.executeQuery();
             /* Loop to get data */
             while (rs.next()) {
@@ -122,6 +127,12 @@ public class AccountDAO {
             }
         } catch (Exception e) {
             System.out.println("getListAccount: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return listAccount;
     }
@@ -132,7 +143,8 @@ public class AccountDAO {
         try {
             /* Select list actor from Setting table */
             String strSelect = "select * from Setting";
-            pstm = getConnection().prepareStatement(strSelect);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strSelect);
             rs = pstm.executeQuery();
             /* Loop to get data */
             while (rs.next()) {
@@ -144,7 +156,12 @@ public class AccountDAO {
             }
         } catch (Exception e) {
             System.out.println("getListActor: " + e.getMessage());
-
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return listActor;
     }
@@ -156,12 +173,19 @@ public class AccountDAO {
             String strUpdate = "update Account\n"
                     + "set roleID = ?\n"
                     + "where id = ?";
-            pstm = getConnection().prepareStatement(strUpdate);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strUpdate);
             pstm.setString(1, roleId);
             pstm.setString(2, userId);
             pstm.execute();
         } catch (Exception e) {
             System.out.println("updateActor: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
     }
 
@@ -170,7 +194,8 @@ public class AccountDAO {
         Account inforUser = new Account();
         try {
             String strSelect = "select * from Account where id = ?";
-            pstm = getConnection().prepareStatement(strSelect);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strSelect);
             pstm.setString(1, userId);
             rs = pstm.executeQuery();
             /* Loop to get data */
@@ -197,7 +222,12 @@ public class AccountDAO {
             }
         } catch (Exception e) {
             System.out.println("getInforUser: " + e.getMessage());
-
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return inforUser;
     }
@@ -208,12 +238,19 @@ public class AccountDAO {
             String strUpdate = "update Account\n"
                     + " set coverImage = ?\n"
                     + " where id = ?";
-            pstm = getConnection().prepareStatement(strUpdate);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strUpdate);
             pstm.setString(1, urlCoverImg);
             pstm.setString(2, userId);
             pstm.execute();
         } catch (Exception e) {
             System.out.println("updateCoverImg: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
     }
 
@@ -291,7 +328,8 @@ public class AccountDAO {
                     + " mail = ?,\n"
                     + " phone = ?\n"
                     + " where id = ?";
-            pstm = getConnection().prepareStatement(strUpdate);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strUpdate);
             pstm.setString(1, name);
             pstm.setString(2, bio);
             pstm.setString(3, avatar);
@@ -302,6 +340,12 @@ public class AccountDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("updateInforUser: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
     }
 
@@ -315,7 +359,8 @@ public class AccountDAO {
                     + "mail = ?,\n"
                     + "phone = ?\n"
                     + "where id =?";
-            pstm = getConnection().prepareStatement(strUpdate);
+            connect = DBContext.getConnection();
+            pstm = connect.prepareStatement(strUpdate);
             pstm.setString(1, name);
             pstm.setString(2, bio);
             pstm.setString(3, username);
@@ -325,6 +370,12 @@ public class AccountDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("updateNameAndBio: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
     }
 
@@ -658,7 +709,8 @@ public class AccountDAO {
         try {
             String strSelect = "SELECT * FROM account\n"
                     + "WHERE userName like ?";
-            PreparedStatement pstm = DBContext.getConnection().prepareStatement(strSelect);
+            connect = DBContext.getConnection();
+            PreparedStatement pstm = connect.prepareStatement(strSelect);
             pstm.setString(1, "%" + txtSearch + "%");
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -690,6 +742,12 @@ public class AccountDAO {
 
         } catch (Exception e) {
             System.out.println("getAccountByUserName: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return listAccount;
     }
@@ -700,7 +758,8 @@ public class AccountDAO {
         try {
             String strSelect = "SELECT * FROM account\n"
                     + "WHERE roleID = ? AND userName like ?";
-            PreparedStatement pstm = DBContext.getConnection().prepareStatement(strSelect);
+            connect = DBContext.getConnection();
+            PreparedStatement pstm = connect.prepareStatement(strSelect);
             pstm.setString(1, actorID);
             pstm.setString(2, "%" + txtSearch + "%");
             ResultSet rs = pstm.executeQuery();
@@ -731,6 +790,12 @@ public class AccountDAO {
             }
         } catch (Exception e) {
             System.out.println("getAccountByUserNameAndActorID: " + e.getMessage());
+        }finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return listAccount;
     }

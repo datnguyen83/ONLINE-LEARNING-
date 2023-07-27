@@ -20,7 +20,7 @@
         <style>
             .all{
                 border: 1px solid black;
-                width: 854px;
+                width: 1068px;
                 height: 600px;
                 background-color: #ffffff ;
                 border-radius: 2%;
@@ -33,7 +33,7 @@
                 height: 45px;
                 cursor: pointer ;
                 margin-top: 20px;
-                margin-left: 400px;
+                margin-left: 500px;
             }
             .container {
                 display: flex;
@@ -87,7 +87,14 @@
                                 </p>
                                 <i class="fas fa-arrow-right" style="margin-left: 57px;margin-top: 60px;font-size: 30px;color: #8d8181"></i>
                             </div>
-                            <div class="item" style="font-size: 15px" onclick="window.location = 'listQuizLesson'">
+                            <div class="item" style="font-size: 15px" onclick="window.location = 'listQuiz'">
+                                <h2 style="text-align: center;margin-top: 3px">Câu đố</h2><br>
+                                <p>
+                                    Câu đố là một câu hoặc tình huống gợi ý, thường chứa một vấn đề khó khăn hoặc một sự mơ hồ, yêu cầu người nghe hoặc đọc suy nghĩ và tìm ra lời giải hoặc câu trả lời thông qua việc suy luận logic, trí tưởng tượng hoặc kiến thức cụ thể. 
+                                </p>
+                                <i class="fas fa-arrow-right" style="margin-left: 57px;margin-top: 60px;font-size: 30px;color: #8d8181"></i>
+                            </div>
+                            <div class="item" style="font-size: 15px" onclick="window.location = 'listQuestion'">
                                 <h2 style="text-align: center;margin-top: 3px">Câu hỏi</h2><br>
                                 <p>
                                     Tạo câu hỏi là một kỹ năng rất quan trọng trong việc giao tiếp và học tập. Để tạo ra những câu hỏi hiệu quả, chúng ta cần phải có kiến thức đầy đủ về chủ đề cần hỏi, đặt câu hỏi dễ hiểu và cần thiết để thu thập thông tin hoặc giải quyết vấn đề.

@@ -43,6 +43,56 @@ public class RouteTypeItemAndCourseDAO {
         }
         return listR;
     }
+    int getMaxRouteTypeItemAndCourse(){
+        RouteTypeItemAndCourseDAO r = new RouteTypeItemAndCourseDAO();
+        ArrayList<RouteTypeItemAndCourse> list = r.getAllRouteTypeItemAndCourse();
+        int max = 0;
+        for (RouteTypeItemAndCourse routeTypeItemAndCourse : list) {
+            int id = Integer.parseInt(routeTypeItemAndCourse.getId());
+            if(max < id) max = id;
+        }
+        return max+1;
+    }
+    
+    //addRouteTypeItemAndCourse
+    public void addRouteTypeItemAndCourse(String routeTypeItemID, String courseID) {
+        String sql = "insert into RouteTypeItemAndCourse(id, routeTypeItemID, courseID) Values(?, ?, ?)";
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.setString(1, getMaxRouteTypeItemAndCourse()+"");
+            pstm.setString(2, routeTypeItemID);
+            pstm.setString(3, courseID);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("addRouteTypeItemAndCourse: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    //removeRouteTypeItemAndCourse
+    public void removeRouteTypeItemAndCourse(String routeTypeItemID, String courseID) {
+        String sql = "delete from RouteTypeItemAndCourse where routeTypeItemID = ? and courseID = ?";
+        try {
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            pstm.setString(1, routeTypeItemID);
+            pstm.setString(2, courseID);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("removeRouteTypeItemAndCourse: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public void insertRouteTypeItemAndCourse(String id, String routeTypeItemID, String[] listTick) {
         for (String string : listTick) {

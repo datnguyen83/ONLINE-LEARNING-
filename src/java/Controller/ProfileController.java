@@ -6,9 +6,11 @@ package Controller;
 
 import static Controller.createCourseServlet.copyImage;
 import DAO.AccountDAO;
+import DAO.BlogDAO;
 import DAO.CourseDetailDAO;
 import Model.Account;
 import Model.AccountGoogle;
+import Model.CommentBlog;
 import Model.CourseAccount;
 import Model.CourseDetail;
 import jakarta.servlet.ServletContext;
@@ -47,23 +49,40 @@ public class ProfileController extends HttpServlet {
         if (session.getAttribute("account") == null) {
             req.getRequestDispatcher("registerMainPage.jsp").forward(req, resp);
         }
-
-        String userId = req.getParameter("id");
         /* Get parameter*/
- /* Get data */
+        String userId = req.getParameter("id");
+        System.out.println(userId);
+        // Get user
+        if (userId == null) {
+            Account account = (Account) session.getAttribute("account");
+            userId = account.getId();
+
+        }
+        /* Get data */
         AccountDAO accountDAO = new AccountDAO();
         CourseDetailDAO courseDetailDAO = new CourseDetailDAO();
+        BlogDAO blogDAO = new BlogDAO();
         Account inforUser = accountDAO.getInforUser(userId);
-        /* Get course of account by user id */
-        ArrayList<CourseDetail> listCourseOfAccount = courseDetailDAO.getCourseOfAccount(userId);
+        /* Get course list registered of account by user id */
+        ArrayList<CourseDetail> listCourseOfAccount = courseDetailDAO.getCourseRegisteredOfAccount(userId);
+        System.out.println(listCourseOfAccount);
+        /* Get list comment by userId */
+        ArrayList<CommentBlog> listComment = blogDAO.getListCommentByUserId(userId);
         /* Set data to JSP */
         req.setAttribute("listCourseOfAccount", listCourseOfAccount);
+        req.setAttribute("listComment", listComment);
         req.setAttribute("inforUser", inforUser);
         req.getRequestDispatcher("ViewProfile.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /* Get userID */
+        HttpSession session = req.getSession();
+        if (session.getAttribute("account") == null) {
+            req.getRequestDispatcher("registerMainPage.jsp").forward(req, resp);
+        }
+        Account account = (Account) session.getAttribute("account");
         AccountDAO accountDAO = new AccountDAO();
         /* Get parameter */
         String userId = req.getParameter("uid");
@@ -97,13 +116,14 @@ public class ProfileController extends HttpServlet {
                     copyImage(srcS, desS);
                     out.flush();
                     out.close();
+                    /* Update cover image of user by user id */
+                    accountDAO.updateCoverImg(userId, "./image/" + filePart.getSubmittedFileName());
+                    doGet(req, resp);
                 }
             } catch (Exception e) {
                 doGet(req, resp);
             }
-            /* Update cover image of user by user id */
-            accountDAO.updateCoverImg(userId, "./image/" + filePart.getSubmittedFileName());
-            doGet(req, resp);
+
         } else {
             /* Back to JSP */
             doGet(req, resp);

@@ -85,7 +85,7 @@ public class feedbackLessonController extends HttpServlet {
         int total = lDao.getTotalLesson(Integer.parseInt(courseID));
 
         ChapterDAO cDao = new ChapterDAO();
-        ArrayList<Chapter> chapters = cDao.getAll();
+        ArrayList<Chapter> chapters = lDao.getAllChapterByCID(Integer.parseInt(courseID));
 
         Lesson lesson = lDao.getLessonByID(Integer.parseInt(selectedID));
 

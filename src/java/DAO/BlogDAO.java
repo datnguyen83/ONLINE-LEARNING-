@@ -58,7 +58,7 @@ public class BlogDAO {
         ArrayList<Blog> listB = new ArrayList<>();
         String sql = "select b.id, b.title, b.topic, b.content, b.numOfLikes, b.date, "
                 + "b.userID, a.avatar, a.userName "
-                + "from Blog b join Account a on b.userID = a.id";
+                + "from Blog b join Account a on b.userID = a.id where b.stateId=1";
         try {
             con = DBContext.getConnection();
             PreparedStatement pstm = con.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllBlog: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -84,7 +84,7 @@ public class BlogDAO {
     }
 
     public void insertBlog(Blog blog) {
-        String sql = "insert into Blog(id, title, topic, content, numOfLikes, date, userID) Values(?, ?, ?, ?, ?, ?, ?);";
+        String sql = "insert into Blog(id, title, topic,stateID, content, numOfLikes, date, userID) Values(?, ?, ?,1, ?, ?, ?, ?);";
         try {
             con = DBContext.getConnection();
             PreparedStatement pstm = con.prepareStatement(sql);
@@ -98,7 +98,7 @@ public class BlogDAO {
             pstm.executeUpdate();
         } catch (Exception e) {
             System.out.println("insertBlog: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -123,7 +123,7 @@ public class BlogDAO {
             pstm.executeUpdate();
         } catch (Exception e) {
             System.out.println("editBlogByID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -149,7 +149,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getBlogById: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -161,8 +161,8 @@ public class BlogDAO {
 
     public static void main(String[] args) {
         BlogDAO b = new BlogDAO();
-        ArrayList<CommentManagement> b1 = new ArrayList<>();
-        b1 = b.getCommentListByState("2");
+        ArrayList<Blog> b1 = new ArrayList<>();
+        b1 = b.getAllBlogList("a");
         System.out.println(b1);
     }
 
@@ -170,7 +170,7 @@ public class BlogDAO {
         ArrayList<Blog> listB = new ArrayList<>();
         String sql = "select b.id, b.title, b.topic, b.content, b.numOfLikes, sb.time, b.userID, a.avatar, a.firstAndLastName \n"
                 + " from Blog b join Account a join SavedBlog sb  on b.id = sb.blogID and b.userID = a.id "
-                + "where sb.userID = " + userID + "  order by b.id asc";
+                + "where b.stateId=1 and sb.userID = " + userID + "  order by b.id asc";
         try {
             con = DBContext.getConnection();
             PreparedStatement pstm = con.prepareStatement(sql);
@@ -185,7 +185,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllSavedBlogByUserID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -205,7 +205,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("deleteBlogFromCommentBlogTable: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -224,7 +224,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("deleteBlogFromSavedBlogTable: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -243,7 +243,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("deleteBlogById: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -264,7 +264,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("unLikeBlog: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -287,7 +287,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("likeBlog: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -314,7 +314,7 @@ public class BlogDAO {
 
         } catch (Exception e) {
             System.out.println("getListBlogLikedByUserID: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -340,7 +340,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getNumOfLikeOfBlog: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -367,7 +367,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("addComment: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -393,7 +393,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getListComment: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -414,7 +414,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("deleteBlogFromCommentDetailTable: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -445,7 +445,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getCommentListAndInformation: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -468,7 +468,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("showComment: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -490,7 +490,7 @@ public class BlogDAO {
             pstm.execute();
         } catch (Exception e) {
             System.out.println("showComment: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -524,7 +524,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getCommentListByUserName: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -558,7 +558,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getCommentListByState: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -592,7 +592,7 @@ public class BlogDAO {
             }
         } catch (Exception e) {
             System.out.println("getAllCommentList: " + e.getMessage());
-        }finally {
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -600,5 +600,180 @@ public class BlogDAO {
             }
         }
         return commentList;
+    }
+
+    /* Get a list of the last 3 user comments by userId */
+    public ArrayList<CommentBlog> getListCommentByUserId(String userId) {
+        ArrayList<CommentBlog> listComment = new ArrayList<CommentBlog>();
+        try {
+            String strSelect = "SELECT *\n"
+                    + "FROM CommentDetail\n"
+                    + "WHERE UserID = ?\n"
+                    + "AND StateID = 1\n"
+                    + "ORDER BY DATE DESC\n"
+                    + "LIMIT 3";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strSelect);
+            pstm.setString(1, userId);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                listComment.add(new CommentBlog(String.valueOf(rs.getInt("id")),
+                        rs.getString("content"), rs.getString("date"),
+                        String.valueOf(rs.getInt("userID")), String.valueOf(rs.getInt("blogID"))));
+            }
+        } catch (Exception ex) {
+            System.out.println("getListCommentByUserId: " + ex.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listComment;
+    }
+
+    public ArrayList<Blog> getBlogByState(String stateFilter) {
+        ArrayList<Blog> blogList = new ArrayList<Blog>();
+        try {
+            String strSelect = "select b.id, b.title, b.stateId, b.content, b.date, b.userID, "
+                    + "a.userName, a.firstAndLastName from Blog b "
+                    + "join Account a on b.userID=a.id  where stateId=?;";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strSelect);
+            pstm.setString(1, stateFilter);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                blogList.add(new Blog(rs.getString(1), rs.getString(2), rs.getString(3), 
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            } 
+        } catch (Exception e) {
+            System.out.println("getBlogListByState: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return blogList;
+    }
+
+    public ArrayList<Blog> getBlogListAndInformation() {
+        ArrayList<Blog> blogList = new ArrayList<Blog>();
+        try {
+            String strSelect = "select b.id, b.title, b.stateId, b.content, b.date, b.userID, "
+                    + "a.userName, a.firstAndLastName from Blog b "
+                    + "join Account a on b.userID=a.id";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strSelect);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                blogList.add(new Blog(rs.getString(1), rs.getString(2), rs.getString(3), 
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            }
+        } catch (Exception e) {
+            System.out.println("getCommentListAndInformation: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return blogList;
+    }
+
+    public void showBlog(String parameter, String parameter0) {
+        try {
+            String strUpdate = "UPDATE Blog \n"
+                    + "SET stateID = ?\n"
+                    + "where id = ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strUpdate);
+            pstm.setString(1, parameter0);
+            pstm.setString(2, parameter);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("showBlog: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void hideBlog(String parameter, String parameter0) {
+        try {
+            String strUpdate = "UPDATE Blog \n"
+                    + "SET stateID = ?\n"
+                    + "where id = ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strUpdate);
+            pstm.setString(1, parameter0);
+            pstm.setString(2, parameter);
+            pstm.execute();
+        } catch (Exception e) {
+            System.out.println("showComment: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public ArrayList<Blog> getAllBlogList(String txtSearch) {
+        ArrayList<Blog> blogList = new ArrayList<Blog>();
+        try {
+            String strSelect = "select b.id, b.title, b.stateId, b.content, b.date, b.userID, a.userName, a.firstAndLastName"
+                    + " from Blog b join Account a on b.userID=a.id  where a.userName like ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strSelect);
+            pstm.setString(1, "%" + txtSearch + "%");
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                blogList.add(new Blog(rs.getString(1), rs.getString(2), rs.getString(3), 
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            }
+        } catch (Exception e) {
+            System.out.println("getAllCommentList: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return blogList;
+    }
+
+    public ArrayList<Blog> getBlogListByUserName(String txtSearch, String state) {
+        ArrayList<Blog> blogList = new ArrayList<Blog>();
+        try {
+            String strSelect = "select b.id, b.title, b.stateId, b.content, b.date, b.userID, a.userName, a.firstAndLastName"
+                    + " from Blog b join Account a on b.userID=a.id  where a.userName like ? and b.stateId = ?";
+            con = DBContext.getConnection();
+            PreparedStatement pstm = con.prepareStatement(strSelect);
+            pstm.setString(1, "%" + txtSearch + "%");
+            pstm.setString(2, state);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                blogList.add(new Blog(rs.getString(1), rs.getString(2), rs.getString(3), 
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            }
+        } catch (Exception e) {
+            System.out.println("getBlogListByUserName: " + e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return blogList;
     }
 }

@@ -24,7 +24,7 @@
             .all{
                 border: 1px solid black;
                 width: 640px;
-                height: 720px;
+                height: 740px;
                 background-color: #ffffff ;
                 border-radius: 2%;
                 margin-top: 100px
@@ -41,13 +41,13 @@
             .send_code_email input[type="submit"]{
                 position: absolute;
                 left: 362px;
-                width:146px;
+                width:100px;
                 height: 42px;
                 border-radius:24px;
                 border-style: solid;
                 border-color: #00000000;
                 border-width: 2px;
-                font-size: 17px ;
+                font-size: 13px ;
                 top: 2px;
                 font-weight: 700;
                 background-color: #ccc;
@@ -110,17 +110,28 @@
 
 
                         <div class="form-group" style="text-align: center ">
-                            <input type="text" class="form-input" placeholder="    Ðịa chỉ email" value="${email}" id="email" name="email" style="margin-bottom: 10px;" > 
+                            <div style="text-align: center ;position: relative">
+                                <input type="text" class="form-input" placeholder="    Ðịa chỉ email" value="${email}" id="email" name="email" style="margin-bottom: 10px;" > 
+                                <div class="send_code_email" style="display: flex;justify-content: center;align-items: center;">
+                                    <input type="submit" name="checkEmail" style="cursor: pointer; margin-top: 2px;margin-left: 48px" value="Check Email"> 
+                                </div>
+                            </div>
+                            <div style="display: flex;justify-content: center; color: red;font-weight:bold ">
+                                ${errorMessage1}                          
+                            </div>  
+                            <div style="display: flex;justify-content: center; color: green;font-weight:bold ">
+                                    ${errorMessage2}                    
+                            </div>  
 
                             <br> 
-                            <input type="text" class="form-input" placeholder="    Mật khẩu" value="${password}" id="password" name="password"> 
+                            <input type="password" class="form-input" placeholder="    Mật khẩu" value="${password}" id="password" name="password"> 
                             <h6 class="FormInput_help__KZbU7" style="    font-weight: normal;text-align:left;margin: 8px 0 8px 130px ;font-family: 'Montserrat',Arial,Helvetica,sans-serif">Gợi ý: Mật khẩu cần có ít nhất 6 kí tự và 1 kí tự đặc biệt</h6>
                         </div>
                         <br> 
                         <div class="form-group" style="text-align: center ;position: relative">
                             <input type="password" class="form-input" placeholder="    Nhập mã xác nhận" id="confirmationCode" name="confirmationCode">
                             <div class="send_code_email" style="display: flex;justify-content: center;align-items: center;">
-                                <input type="submit" name="sendCodeBtn" style="cursor: pointer; margin-top: 2px" value="Gửi mã"> 
+                                <input type="submit" name="sendCodeBtn" style="cursor: pointer; margin-top: 2px;margin-left: 48px;" value="Gửi mã"> 
                             </div>
                             <br>
                         </div>
@@ -158,7 +169,7 @@
             function register_phone_ridect() {
                 window.location.href = "/g4/registerPhone.jsp";
             }
-            function returnHome(){
+            function returnHome() {
                 window.location.href = "/g4/home";
             }
             function ridect_login() {

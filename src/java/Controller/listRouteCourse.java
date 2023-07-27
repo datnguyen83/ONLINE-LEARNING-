@@ -70,8 +70,15 @@ public class listRouteCourse extends HttpServlet {
 //            /* If the user is not an administrator */
 //            request.getRequestDispatcher("home").forward(request, response);
 //        }
-        String routeTypeID = request.getParameter("id");
+
         RouteTypeDAO rta = new RouteTypeDAO();
+        // Show route type
+        if(request.getParameter("mod") != null && request.getParameter("mod").equals("1")){
+            rta.updateStatusOfRouteType(request.getParameter("routeTypeID"), request.getParameter("mod"));
+        }else if(request.getParameter("mod") != null && request.getParameter("mod").equals("2")){ // Hide route type
+            rta.updateStatusOfRouteType(request.getParameter("routeTypeID"), request.getParameter("mod"));
+        }
+        String routeTypeID = request.getParameter("id");
         rta.deleteRouteTypeByID(routeTypeID);
         ArrayList<RouteType> listRouteType = rta.getAllRouteType();
         request.setAttribute("listRouteType", listRouteType);

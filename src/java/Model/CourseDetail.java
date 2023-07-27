@@ -24,6 +24,7 @@ public class CourseDetail {
     private String courseID;
     private String timeRegistration;
     private String stateId;
+    private boolean isPublished;
     
     public CourseDetail() {
     }
@@ -46,11 +47,11 @@ public class CourseDetail {
         this.image = image;
     }
 
-    public CourseDetail(String courseID, String title, int price, String detailCourseDes, String level) {
+    public CourseDetail(String courseID, String title, int price, boolean isPublished, String level) {
         this.title = title;
         this.price = price;
         this.level = level;
-        this.detailCourseDes = detailCourseDes;
+        this.isPublished = isPublished;
         this.courseID = courseID;
     }
     
@@ -115,6 +116,14 @@ public class CourseDetail {
         this.detailCourseDes = detailCourseDes;
         this.image = image;
         this.courseID = courseID;
+    }
+
+    public boolean isIsPublished() {
+        return isPublished;
+    }
+
+    public void setIsPublished(boolean isPublished) {
+        this.isPublished = isPublished;
     }
 
 

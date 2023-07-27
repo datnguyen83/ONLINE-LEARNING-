@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>StartUpFilter</filter-name>
+        <filter-class>Filter.StartUpFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>StartUpFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>homeServlet</servlet-name>
         <servlet-class>Controller.homeServlet</servlet-class>
@@ -149,16 +157,16 @@
         <servlet-class>Controller.MyOrderController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>newQuizLesson</servlet-name>
-        <servlet-class>Controller.newQuizLesson</servlet-class>
+        <servlet-name>newQuestion</servlet-name>
+        <servlet-class>Controller.newQuestion</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>doingQuizLesson</servlet-name>
-        <servlet-class>Controller.doingQuizLesson</servlet-class>
+        <servlet-name>doingQuestion</servlet-name>
+        <servlet-class>Controller.doingQuestion</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>listQuizLesson</servlet-name>
-        <servlet-class>Controller.listQuizLesson</servlet-class>
+        <servlet-name>listQuestion</servlet-name>
+        <servlet-class>Controller.listQuestion</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Controller.QAOfLessonController</servlet-name>
@@ -183,6 +191,14 @@
     <servlet>
         <servlet-name>listRouteTypeItemServlet</servlet-name>
         <servlet-class>Controller.listRouteTypeItemServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editQuiz</servlet-name>
+        <servlet-class>Controller.editQuiz</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>listQuiz</servlet-name>
+        <servlet-class>Controller.listQuiz</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>homeServlet</servlet-name>
@@ -333,16 +349,16 @@
         <url-pattern>/myorder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>newQuizLesson</servlet-name>
-        <url-pattern>/newQuizLesson</url-pattern>
+        <servlet-name>newQuestion</servlet-name>
+        <url-pattern>/newQuestion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>doingQuizLesson</servlet-name>
-        <url-pattern>/doingQuizLesson</url-pattern>
+        <servlet-name>doingQuestion</servlet-name>
+        <url-pattern>/doingQuestion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>listQuizLesson</servlet-name>
-        <url-pattern>/listQuizLesson</url-pattern>
+        <servlet-name>listQuestion</servlet-name>
+        <url-pattern>/listQuestion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Controller.QAOfLessonController</servlet-name>
@@ -367,6 +383,14 @@
     <servlet-mapping>
         <servlet-name>listRouteTypeItemServlet</servlet-name>
         <url-pattern>/listRouteCourseItem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editQuiz</servlet-name>
+        <url-pattern>/editQuiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listQuiz</servlet-name>
+        <url-pattern>/listQuiz</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -112,7 +112,14 @@ public class AccountDoingQuestionDAO {
         return false;
     }
     public int getMaxID(){
-        return getAllAccountDoingQuestion().size()+1;
+        AccountDoingQuestionDAO a = new AccountDoingQuestionDAO();
+        ArrayList<AccountDoingQuestion> listA = a.getAllAccountDoingQuestion();
+        int id = 0;
+        for (AccountDoingQuestion accountDoingQuestion : listA) {
+            int ida = Integer.parseInt(accountDoingQuestion.getId());
+            if(id < ida) id = ida;
+        }
+        return id+1;
     }
     public void insertAccountDoingQuestion(String answer, String trueOrFalse, String accountID, String questionID) {
         ArrayList<AccountDoingQuestion> listADQ = new ArrayList<>();

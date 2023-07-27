@@ -39,7 +39,7 @@ public class SavedBlogDAO {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SavedBlogDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return listSavedBlog;
@@ -135,7 +135,7 @@ public class SavedBlogDAO {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SavedBlogDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -195,7 +195,7 @@ public class SavedBlogDAO {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(BlogDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SavedBlogDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
             return true;
